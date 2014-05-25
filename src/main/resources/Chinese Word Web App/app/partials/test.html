@@ -1,0 +1,38 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<!--Sidebar content-->
+
+			Tests:
+			<ol>
+				<li ng-repeat="test in tests"
+					ng-click="showWordlists(test)">{{test.name}}
+				</li>
+			</ol>
+		</div>
+		<div class="span10">
+			<!--Body content-->
+            <div class="wordlist_container">
+                <h1>Wordlists</h1>
+                <span ng-repeat="wordlist in wordlists">
+                  <input type='checkbox' value='{{wordlist.id}}' ng-checked="wordlist.selected" ng-model="wordlist.selected" ng-click="selectWordlist(wordlist)">{{wordlist.name}}<br/>
+                </span>
+                <br><br>
+                <button ng-click="save()" ng-disabled="!isDirty">Save</button><br><br>
+                <button ng-click="generate()" ng-disabled="!isGenerateReady">Generate</button>
+            </div>
+            <div class="words_container" ng-if="isShowWords">
+                <h1>Words</h1>
+                <div ng-repeat="word in words" class="container">
+                    <div class="letter">{{word.formatted_word.letter}}</div>
+                    <div ng-if="word.formatted_word.py.one != undefined" class="number one">{{word.formatted_word.py.one}}</div>
+                    <div ng-if="word.formatted_word.py.two != undefined" class="number two">{{word.formatted_word.py.two}}</div>
+                    <div ng-if="word.formatted_word.py.twoBold != undefined" class="number two_bold">{{word.formatted_word.py.twoBold}}</div>
+                    <div ng-if="word.formatted_word.py.three != undefined" class="number three">{{word.formatted_word.py.three}}</div>
+                    <div ng-if="word.formatted_word.py.four != undefined" class="number four">{{word.formatted_word.py.four}}</div>
+                    <div ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

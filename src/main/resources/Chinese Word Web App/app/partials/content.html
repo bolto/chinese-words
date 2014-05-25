@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+
+<div ng-controller="sidebarCtrl">
+    <h1>Kids</h1>
+    <div ng-switch="moduleState">
+        <div ng-switch-when="list">
+            <ul>
+                <li ng-repeat="fruit in fruits"><a href="#" ng-click="showDetail(fruit)">{{fruit}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    </div>
+      <div class="span10">
+          <!--Body content-->
+
+      </div>
+  </div>
+</div>

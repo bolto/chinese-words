@@ -1,0 +1,34 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<!--Sidebar content-->
+
+			Kids:
+			<ul>
+				<li ng-repeat="profile in profiles"
+					ng-click="toggleShowWordlists(profile)">{{profile.firstName}}
+					{{profile.lastName}}
+					<ul ng-if="profile.isShowWordlists">
+						<li ng-repeat="wordlist in profile.wordlists"
+							ng-click="showWords(profile, wordlist);$event.stopPropagation();">{{wordlist.id}}</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="span10">
+			<!--Body content-->
+				<h1>Words</h1>
+				<div ng-if="isShowWords">
+		          <div ng-repeat="word in words" class="container">
+		              <div class="letter">{{word.letter}}</div>
+		              <div ng-if="word.one != ''" class="number one">{{word.one}}</div>
+		              <div ng-if="word.two != ''" class="number two">{{word.two}}</div>
+		              <div ng-if="word.twoBold != ''" class="number two_bold">{{word.twoBold}}</div>
+		              <div ng-if="word.three != ''" class="number three">{{word.three}}</div>
+		              <div ng-if="word.four != ''" class="number four">{{word.four}}</div>
+		              <div ng-if="word.tone != ''" class="number tone">{{word.tone}}</div>
+		          </div>
+				</div>
+		</div>
+	</div>
+</div>

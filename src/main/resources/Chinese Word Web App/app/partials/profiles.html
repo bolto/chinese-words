@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+
+      Kids:
+        <ul>
+            <li ng-repeat="profile in profiles">
+                <a href="#profiles/{{profile.id}}/wordlists">{{profile.firstName}} {{profile.lastName}}</a>
+            </li>
+        </ul>
+
+    </div>
+      <div class="span10">
+          <!--Body content-->
+
+      </div>
+  </div>
+</div>

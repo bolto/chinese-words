@@ -1,0 +1,40 @@
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span2">
+			<!--Sidebar content-->
+
+			Word Edit
+		</div>
+		<div class="span10">
+			<!--Body content-->
+            <div class="container" ng-mouseenter="word.fw.showPingyings = true;" ng-mouseleave="word.fw.showPingyings = false;">
+                <div class="letter">{{word.fw.letter}}</div>
+                <div ng-if="word.fw.py.one != ''" class="number one">{{word.fw.py.one}}</div>
+                <div ng-if="word.fw.py.two != ''" class="number two">{{word.fw.py.two}}</div>
+                <div ng-if="word.fw.py.twoBold != ''" class="number two_bold">{{word.fw.py.twoBold}}</div>
+                <div ng-if="word.fw.py.three != ''" class="number three">{{word.fw.py.three}}</div>
+                <div ng-if="word.fw.py.four != ''" class="number four">{{word.fw.py.four}}</div>
+                <div ng-if="word.fw.py.tone != ''" class="number tone">{{word.fw.py.tone}}</div>
+                <div ng-show="word.fw.showPingyings" ng-click="setDefault(pingying)" class="py_list">
+                    <span ng:repeat="py in word.fw.pys" class="item" style="cursor: move;">
+                        {{py}}<br>
+                    </span>
+                </div>
+            </div>
+            <div class="container" ng-mouseenter="word1.fw.showPingyings = true;" ng-mouseleave="word1.fw.showPingyings = false;">
+                <div class="letter">{{word1.fw.letter}}</div>
+                <div ng-if="word1.fw.py.one != ''" class="number one">{{word1.fw.py.one}}</div>
+                <div ng-if="word1.fw.py.two != ''" class="number two">{{word1.fw.py.two}}</div>
+                <div ng-if="word1.fw.py.twoBold != ''" class="number two_bold">{{word1.fw.py.twoBold}}</div>
+                <div ng-if="word1.fw.py.three != ''" class="number three">{{word1.fw.py.three}}</div>
+                <div ng-if="word1.fw.py.four != ''" class="number four">{{word1.fw.py.four}}</div>
+                <div ng-if="word1.fw.py.tone != ''" class="number tone">{{word1.fw.py.tone}}</div>
+                <div ng-show="word1.fw.showPingyings" ng-click="setDefault(pingying)" class="py_list">
+                    <span ng:repeat="py in word1.fw.pys" class="item" style="cursor: move;">
+                        {{py}}<br>
+                    </span>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

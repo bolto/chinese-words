@@ -1,0 +1,79 @@
+#new_line{ 
+clear: left; 
+}
+ul {
+    clear: both;
+    list-style-type: none;
+}
+.container {
+    position: relative;
+    width: 65px;
+    height: 50px;
+    background: silver;  //remove this to make it white like in your pic
+    display: inline;
+    white-space:nowrap;
+    float:left;
+}
+.letter {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 650%;
+    bottom: 0;
+    display: inline-block;
+    font-size: 36px;
+}
+.number {
+    position: absolute;
+    left: 40px;
+    width: 15%;
+    height: 25%;
+    font-size: 10px;
+    text-align: center;
+    text-indent: -5px;
+}
+.tone {
+    position: absolute;
+    right: 0;
+    top: 60%;
+    width: 15%;
+    font-size: 20px;
+    text-align: center;
+    text-indent: 5px;
+}
+.one {
+    top: 30%;
+    font-size: 20px;
+}
+.two {
+    top: 35%;
+}
+.two_bold {
+    top: 45%;
+    font-size: 20px;
+}
+.three {
+    top: 55%;
+}
+.four {
+    top: 72%;
+}
+.py_list{
+    position: absolute;
+    right: 10%;
+    top: 60%;
+    width: 15%;
+    bottom: 0;
+    display: inline-block;
+    font-size: 10px;
+}
+.wordlist_container {
+    position: absolute;
+    left: 125px;
+    width: 20%;
+}
+.words_container {
+    position: absolute;
+    left: 275px;
+    width: 60%;
+}
