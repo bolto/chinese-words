@@ -7,19 +7,29 @@
 		</div>
 		<div class="span10">
 			<!--Body content-->
-            <div class="container" ng-mouseenter="word.fw.showPingyings = true;" ng-mouseleave="word.fw.showPingyings = false;">
-                <div class="letter">{{word.fw.letter}}</div>
-                <div ng-if="word.fw.py.one != ''" class="number one">{{word.fw.py.one}}</div>
-                <div ng-if="word.fw.py.two != ''" class="number two">{{word.fw.py.two}}</div>
-                <div ng-if="word.fw.py.twoBold != ''" class="number two_bold">{{word.fw.py.twoBold}}</div>
-                <div ng-if="word.fw.py.three != ''" class="number three">{{word.fw.py.three}}</div>
-                <div ng-if="word.fw.py.four != ''" class="number four">{{word.fw.py.four}}</div>
-                <div ng-if="word.fw.py.tone != ''" class="number tone">{{word.fw.py.tone}}</div>
-            </div>
-            <div ng-show="word.fw.showPingyings" ng-click="setDefault(pingying)" class='py_list'>
-                    <span ng:repeat="py in word.fw.pys" class="item" style="cursor: move;">
-                        {{py}}<br>
-                    </span>
+            <div class="edit_container">
+                <div class="edit_letter ng-binding">間</div>
+                <div class="edit_number edit_radio ng-scope ng-binding"><input type="radio"></div>
+                <div class="edit_number edit_one ng-scope ng-binding"></div>
+                <div class="edit_number edit_two ng-scope ng-binding">ㄐ</div>
+                <div class="edit_number edit_two_bold ng-scope ng-binding"></div>
+                <div class="edit_number edit_three ng-scope ng-binding">ㄧ</div>
+                <div class="edit_number edit_four ng-scope ng-binding">ㄢ</div>
+                <div class="edit_number edit_tone ng-scope ng-binding"></div>
+                <div class="edit_number_2 edit_radio ng-scope ng-binding"><input type="radio"></div>
+                <div class="edit_number_2 edit_one ng-scope ng-binding"></div>
+                <div class="edit_number_2 edit_two ng-scope ng-binding">ㄐ</div>
+                <div class="edit_number_2 edit_two_bold ng-scope ng-binding"></div>
+                <div class="edit_number_2 edit_three ng-scope ng-binding">ㄧ</div>
+                <div class="edit_number_2 edit_four ng-scope ng-binding">ㄢ</div>
+                <div class="edit_number_2 edit_tone ng-scope ng-binding"></div>
+                <div class="edit_number_3 edit_radio ng-scope ng-binding"><input type="radio"></div>
+                <div class="edit_number_3 edit_one ng-scope ng-binding"></div>
+                <div class="edit_number_3 edit_two ng-scope ng-binding">ㄐ</div>
+                <div class="edit_number_3 edit_two_bold ng-scope ng-binding"></div>
+                <div class="edit_number_3 edit_three ng-scope ng-binding">ㄧ</div>
+                <div class="edit_number_3 edit_four ng-scope ng-binding">ㄢ</div>
+                <div class="edit_number_3 edit_tone ng-scope ng-binding"></div>
             </div>
 		</div>
 	</div>

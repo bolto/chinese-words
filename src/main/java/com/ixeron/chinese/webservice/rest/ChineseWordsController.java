@@ -427,6 +427,9 @@ public class ChineseWordsController {
     @ResponseBody
     public Word getWord(@PathVariable("wordId") String wordId_p) {
         // TODO: this needs to return a list of words using GET filter parameters
+    	//check to see if it's integer
+    	// then check to see if id returns a valid word
+    	// then check to see if wordId is actually a Chinese word
         Word word = wordDao.find(Integer.parseInt(wordId_p));
 
         return word;
