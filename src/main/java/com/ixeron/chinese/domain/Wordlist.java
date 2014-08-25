@@ -97,7 +97,7 @@ public class Wordlist {
     /**
      * @return the words
      */
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "wordlistId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "wordlistId")
     public List<WordlistWord> getWords() {
         return words;
     }
