@@ -10,12 +10,11 @@
 		<tr align="left">
 			<td align="left" valign="top">
 				<form action="/api/profiles/{profileId}/addWordlist" method="POST" name="search_form">
-					<p style="text-align: center; width: 100%; color: #CFC4AF;">
-						請輸入欲查詢的國字：
-						<textarea name="wordlist" style="background: #CFC4AF;"></textarea>
-						<input type="submit" name="Submit" value="查詢"
+						Add a list of words:<br><br>
+						List name: <input type="text" name="name"><br> (defaulted to timestamp if not supplied)<br><br>
+						Words:<textarea name="wordlist" style="background: #CFC4AF;"></textarea><br>
+						<input type="submit" name="Submit" value="Add"
 							style="background: #CFC4AF; color: #463A13;">
-					</p>
 				</form>
 			</td>
 		</tr>

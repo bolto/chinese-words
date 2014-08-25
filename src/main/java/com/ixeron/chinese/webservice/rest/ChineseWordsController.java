@@ -255,15 +255,16 @@ public class ChineseWordsController {
         return wordDtos;
     }
 
-    @RequestMapping(value = {"/profiles/{profileId}/", "/profiles/{profileId}"}, produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = {"/profiles/{profileId}/addWordList"}, produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
     @ResponseBody
     public String getProfileWebPage(@PathVariable("profileId") String profileId_p) {
         Profile profile = getProfile(profileId_p);
         if(profile == null){
             return String.format("Invalid profile id: %s.", (profileId_p==null)? "null":profileId_p);
         }
-        return getProfileWebPageHtml().replace("{profileId}", profileId_p);
+        return getProfileAddWordListWebPageHtml().replace("{profileId}", profileId_p);
     }
+
     private Profile getProfile(String profileIdStr){
         if(profileIdStr == null || profileIdStr.isEmpty()){
             return null;
@@ -292,51 +293,57 @@ public class ChineseWordsController {
 
     @RequestMapping(value = {"/profiles/{profileId}/addWordlist"}, method = RequestMethod.POST)
     @ResponseBody
-    public String addWordlist(@RequestParam("wordlist") String wordList_p,
+    public String addWordlist(@RequestParam("wordlist") String wordList_p, @RequestParam("name") String name_p,
             @PathVariable("profileId") String profileId_p,
             HttpServletResponse httpResponse_p, WebRequest request_p) {
         Profile profile = getProfile(profileId_p);
         if(profile == null){
             return String.format("Invalid profile id: %s.", (profileId_p==null)? "null":profileId_p);
         }
-        if (wordList_p != null && wordList_p.length() != 0) {
-            Map<String, Word> words = wordDao.listToMap(wordList_p);
-            Wordlist wordlistEntry = new Wordlist();
-            Date now = new Date();
-            wordlistEntry.setCreated(now);
-            wordlistEntry.setUpdated(now);
-            wordlistDao.add(wordlistEntry);
-            ProfileWordlistId pwId = new ProfileWordlistId();
-            pwId.setProfile(profile);
-            pwId.setWordlist(wordlistEntry);
-            ProfileWordlist pw = new ProfileWordlist();
-            pw.setPk(pwId);
-            pw.setCreated(now);
-            profileWordlistDao.add(pw);
-            for(int i = 0; i<wordList_p.length(); i++){
-                String symbol = wordList_p.substring(i, i+1);
-                WordlistWord wordlistWord = new WordlistWord();
-                wordlistWord.setSymbol(symbol);
-                wordlistWord.setListOrder(i);
-                wordlistWord.setWordlistId(wordlistEntry.getId());
-                Word word = null;
-                if(words != null && words.containsKey(symbol)){
-                    word = words.get(symbol);
-                }
-                if (word != null){
-                    WordPingying wpy = wordPingyingDao.findFirstPingying(word);
-                    wordlistWord.setWordPingyingId(wpy.getPk());
-                }
-                now = new Date();
-                wordlistWord.setCreated(now);
-                wordlistWord.setUpdated(now);
-                wordlistWordDao.add(wordlistWord);
-            }
+        String name = String.format("%s-%s", profileId_p, new Date());
+        if(name_p != null && !name_p.equals("")){
+        	name = name_p;
         }
-        return "redirect:/chinese/app/index.html#/profiles";
+        if(wordList_p == null || wordList_p.length() == 0)
+        	return "redirect:/api/profiles/1/addWordlist";
+        Map<String, Word> words = wordDao.listToMap(wordList_p);
+        Wordlist wordlistEntry = new Wordlist();
+        Date now = new Date();
+        wordlistEntry.setCreated(now);
+        wordlistEntry.setUpdated(now);
+        wordlistEntry.setName(name);
+        wordlistDao.add(wordlistEntry);
+        ProfileWordlistId pwId = new ProfileWordlistId();
+        pwId.setProfile(profile);
+        pwId.setWordlist(wordlistEntry);
+        ProfileWordlist pw = new ProfileWordlist();
+        pw.setPk(pwId);
+        pw.setCreated(now);
+        profileWordlistDao.add(pw);
+        for(int i = 0; i<wordList_p.length(); i++){
+            String symbol = wordList_p.substring(i, i+1);
+            WordlistWord wordlistWord = new WordlistWord();
+            wordlistWord.setSymbol(symbol);
+            wordlistWord.setListOrder(i);
+            wordlistWord.setWordlistId(wordlistEntry.getId());
+            Word word = null;
+            if(words != null && words.containsKey(symbol)){
+                word = words.get(symbol);
+            }
+            if (word != null){
+                WordPingying wpy = wordPingyingDao.findFirstPingying(word);
+                wordlistWord.setWordPingyingId(wpy.getPk());
+            }
+            now = new Date();
+            wordlistWord.setCreated(now);
+            wordlistWord.setUpdated(now);
+            wordlistWordDao.add(wordlistWord);
+        }
+
+        return "redirect:/api/profiles/1/addWordlist";
     }
 
-    private String getProfileWebPageHtml(){
+    private String getProfileAddWordListWebPageHtml(){
         URL url = Resources.getResource("addWordlist.html");
         String text = null;
         try {
