@@ -332,7 +332,10 @@ public class ChineseWordsController {
             }
             if (word != null){
                 WordPingying wpy = wordPingyingDao.findFirstPingying(word);
-                wordlistWord.setWordPingyingId(wpy.getPk());
+                if (wpy != null)
+                	wordlistWord.setWordPingyingId(wpy.getPk());
+                else
+                	System.out.println(String.format("Pingying not found for %s.", word.getSymbol()));
             }
             now = new Date();
             wordlistWord.setCreated(now);
