@@ -1,4 +1,0 @@
-delete from profile_wordlist;
-delete from test_wordlist;
-delete from wordlist_word;
-delete from wordlist;

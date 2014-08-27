@@ -255,7 +255,7 @@ public class ChineseWordsController {
         return wordDtos;
     }
 
-    @RequestMapping(value = {"/profiles/{profileId}/addWordList"}, produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = {"/profiles/{profileId}/addWordlist"}, produces = "text/html; charset=UTF-8", method = RequestMethod.GET)
     @ResponseBody
     public String getProfileWebPage(@PathVariable("profileId") String profileId_p) {
         Profile profile = getProfile(profileId_p);
