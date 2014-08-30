@@ -35,6 +35,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.isDirty = false;
         $scope.isListReady = false;
         $scope.isGenerateReady = false;
+        $scope.isShowPingying = true;
         $scope.showWordlists = function showWordlists(test){
             $scope.isDirty = false;
             $scope.isListReady = false;
@@ -75,6 +76,9 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.selectWordlist = function selectWordlist(wordlist){
             wordlist.selected = !wordlist.selected;
             $scope.updateStatus();
+        }
+        $scope.clickIsShowPingying = function clickIsShowPingying(){
+            $scope.isShowPingying = !$scope.isShowPingying;
         }
         $scope.updateStatus = function updateStatus(){
             if($scope.wordlists.length == 0){

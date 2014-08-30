@@ -180,3 +180,6 @@ display: inline;
     left: 275px;
     width: 60%;
 }
+input.std5digits{
+    width: 25px;
+}
