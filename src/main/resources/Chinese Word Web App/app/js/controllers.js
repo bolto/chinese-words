@@ -33,9 +33,11 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
     function ($scope, Test, WordlistAll, WordlistTest, TestWordlist, WordUtils) {
         $scope.tests = Test.list();
         $scope.isDirty = false;
+        $scope.isListReady = false;
         $scope.isGenerateReady = false;
         $scope.showWordlists = function showWordlists(test){
             $scope.isDirty = false;
+            $scope.isListReady = false;
             $scope.isGenerateReady = false;
             $scope.test = Test.get({testId:test.id}, function (response) {
                 $scope.wordlists = WordlistAll.query(function (response) {
@@ -78,15 +80,20 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             if($scope.wordlists.length == 0){
                 $scope.isDirty = false;
                 $scope.isGenerateReady = false;
+                $scope.isListReady = false;
                 return;
             }
             var selIdList = $scope.getSelectedIdList();
             var curIdList = $scope.getExistingIdList();
             if(selIdList.length != curIdList.length){
                 $scope.isDirty = true;
-                $scope.isGenerateReady = false;
+                $scope.isListReady = false;
+                $scope.setGenerateControls($scope.isListReady);
                 return;
             }
+            // remove matching entries from both selIdList and curIdList
+            // if the remaining lists do not match, then the overall selection has changed
+            // thus it is dirty and save button should be enabled.
             for(var i=(selIdList.length-1); i>=0 ; i--){
                 var index = curIdList.indexOf(selIdList[i]);
                 if (index > -1) {
@@ -95,7 +102,8 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 }
             }
             $scope.isDirty = !(curIdList.length == 0 && selIdList.length == 0);
-            $scope.isGenerateReady = !$scope.isDirty;
+            $scope.isListReady = (!$scope.isDirty && $scope.getExistingIdList().length > 0);
+            $scope.setGenerateControls($scope.isListReady);
         }
         $scope.save = function save(){
             $scope.test.wordlists = [];
@@ -109,12 +117,25 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 $scope.showWordlists($scope.test);
             });
         }
-        $scope.generate = function generate(){
+        $scope.list = function list(){
             var words = [];
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
                     var word = $scope.test.wordlists[i].words[j];
-                    //word.formatted_word = $scope.toFormattedWord(word);//WordUtils
+                    word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
+                    words.push(word);
+                }
+            }
+            $scope.words = words;
+            $scope.showWords();
+        }
+        $scope.generate = function generate(){
+            // this should generate random words, and should have additional
+            // parameters limit max number of words
+            var words = [];
+            for(var i = 0; i < $scope.test.wordlists.length; i++){
+                for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
+                    var word = $scope.test.wordlists[i].words[j];
                     word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
                     words.push(word);
                 }
@@ -124,6 +145,9 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         }
         $scope.showWords = function showWords(){
             $scope.isShowWords = true;
+        }
+        $scope.setGenerateControls = function setGenerateControls(bool){
+            $scope.isGenerateReady = bool;
         }
     }]);
 

@@ -9,7 +9,28 @@ left join pingying_character tpy
 left join tone t
   on t.id = py.tone_id
 where
-  fpy.symbol = 'ㄊ'
+  fpy.symbol = 'ㄒ'
 and spy.symbol = 'ㄧ'
-and tpy.symbol = 'ㄠ'
-and t.symbol = 'ˊ'
+and tpy.symbol = '0'
+and t.symbol = '';
+
+
+INSERT INTO `chinesewords`.`pingying`
+(`created`,
+`first_py_id`,
+`second_py_id`,
+`third_py_id`,
+`tone_id`,
+`updated`)
+VALUES
+(
+NOW(),
+3,
+38,
+34,
+5,
+NOW());
+
+select * from pingying where id = 90;
+
+select * from tone;

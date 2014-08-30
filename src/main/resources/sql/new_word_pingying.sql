@@ -7,8 +7,8 @@ INSERT INTO `chinesewords`.`word_pingying`
 VALUES
 (NOW(),
 NOW(),
-12851,
-172,
+220,
+215,
 1);
 
 
@@ -23,4 +23,4 @@ VALUES
 NOW());
 
 
-select id from `chinesewords`.`word` where symbol = '條';
+select id from `chinesewords`.`word` where symbol = '和';

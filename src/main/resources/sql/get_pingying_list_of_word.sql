@@ -14,4 +14,4 @@ left join pingying_character tpy
 left join tone t
   on t.id = py.tone_id
 where
-  w.symbol = '些'
+  w.symbol = '數'
