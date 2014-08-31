@@ -53,23 +53,13 @@ chinesewordCommonUtils.factory('WordUtils', ['PingyingCharacter', 'Tone', functi
     root.toFormattedWord = function toFormattedWord(word){
         var fw = new Object();
         fw.letter = word.symbol;
-        if(typeof word.wordPingyingId == 'undefined' || word.wordPingyingId == null){
-            if(typeof word.pingyings != 'undefined' || word.pingyings != null)
-                fw.py = root.toFormattedPingying(word.pingyings[0]);
-        }
-        else
+        if(root.hasPingying(word))
             fw.py = root.toFormattedPingying(word.wordPingyingId.pingying);
-
-        if(typeof word.pingyings != 'undefined'){
-            var pys = [];
-            for(var i = 0; i<word.pingyings.length; i++){
-                pys.push(root.toFormattedPingyingStr(word.pingyings[i]));
-            }
-            fw.pys = pys;
-        }
         return fw;
     }
-
+    root.hasPingying = function hasPingying(word){
+        return !(typeof word.wordPingyingId == 'undefined' || word.wordPingyingId == null);
+    }
     root.toFormattedPingyingStr = function toFormattedPingyingStr(py){
         var str = '';
         str += root.pingying_character_lut[py.firstPyId];
