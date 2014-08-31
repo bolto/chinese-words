@@ -136,13 +136,41 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.generate = function generate(){
             // this should generate random words, and should have additional
             // parameters limit max number of words
-            var words = [];
+            var wordMap = {};
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
                     var word = $scope.test.wordlists[i].words[j];
-                    word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
-                    words.push(word);
+                    if(WordUtils.hasPingying(word)) {
+                        // note this may overwrite the word with the same word.id
+                        // but we will deal with this later
+                        // as we also need to deal with multiple pingyings for a word
+                        // so there should be a nested map that stores all pingying variants
+                        wordMap[word.wordPingyingId.word.id] = word;
+                    }
                 }
+            }
+            // target size is the number of random words to be taken from the combined list of words
+            var targetSize = 0;
+            if(!isNaN($scope.num_words)){
+                targetSize = parseInt($scope.num_words);
+            }
+            // convert hashmap to array for easier processing
+            var mapToArray = [];
+            for(var i in wordMap){
+                mapToArray.push(wordMap[i]);
+            }
+            // if words are less than target size, target size is set to the number of words instead
+            if(mapToArray.length < targetSize){
+                targetSize = mapToArray.length;
+            }
+            var words = [];
+            while(words.length < targetSize){
+                var random = Math.floor((Math.random() * mapToArray.length)) ;
+                var word = mapToArray[random];
+                word.formatted_word = WordUtils.toFormattedWord(word);
+                words.push(word);
+                // remove the pushed word from array to avoid repeats
+                mapToArray.splice(random, 1);
             }
             $scope.words = words;
             $scope.showWords();

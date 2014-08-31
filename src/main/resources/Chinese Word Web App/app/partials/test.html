@@ -20,8 +20,8 @@
                 <br><br>
                 <button ng-click="save()" ng-disabled="!isDirty">Save</button><br><br>
                 <button ng-click="list()" ng-disabled="!isListReady">List</button><br><br>
-                Words:<input class="std5digits" type="text" name="num_words" ng-disabled="!isGenerateReady"><br>
-                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">
+                Words:<input class="std5digits" type="text" name="num_words" id="num_words" ng-model="num_words" ng-disabled="!isGenerateReady"><br>
+                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()"><br>
                 <button ng-click="generate()" ng-disabled="!isGenerateReady">Generate</button>
             </div>
             <div class="words_container" ng-if="isShowWords">
