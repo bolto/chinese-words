@@ -13,10 +13,10 @@ chinesewordControllers.controller('ProfileListCtrl', ['$scope', 'Profile', 'Word
         		$scope.getWordlistsByProfile(profile);
         		$scope.isShowWords = false;
         	}
-        }
+        };
         $scope.getWordlistsByProfile = function(profile){
         	profile.wordlists = WordlistProfile.query({profileId:profile.id});
-        }
+        };
         $scope.showWords = function(profile, wordlist){
         	$scope.isShowWords = true;
         	$scope.words = Word.query({profileId:profile.id, wordlistId:wordlist.id});
@@ -36,6 +36,8 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.isListReady = false;
         $scope.isGenerateReady = false;
         $scope.isShowPingying = true;
+        $scope.total_words = 0;
+        $scope.lines = [];
         $scope.showWordlists = function showWordlists(test){
             $scope.isDirty = false;
             $scope.isListReady = false;
@@ -48,7 +50,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                     });
                 });
             });
-        }
+        };
         $scope.isExistingWordlist = function isExistingWordlist(wordlist){
             for(var i=0; i< $scope.test.wordlists.length; i++){
                 if(wordlist.id == $scope.test.wordlists[i].id){
@@ -56,7 +58,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 }
             }
             return false;
-        }
+        };
         $scope.getSelectedIdList = function getSelectedIdList(){
             var list = [];
             for(var i = 0; i < $scope.wordlists.length; i++){
@@ -65,7 +67,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 }
             }
             return list;
-        }
+        };
         $scope.getExistingIdList = function getExistingIdList(){
             // returns a list of currently selected wordlists for the given test
             var list = [];
@@ -73,34 +75,34 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 list[list.length] = $scope.test.wordlists[i].id;
             }
             return list;
-        }
+        };
         $scope.selectWordlist = function selectWordlist(wordlist){
             wordlist.selected = !wordlist.selected;
             $scope.updateStatus();
-        }
+        };
         $scope.clearWordlistSelection = function clearWordlistSelection(){
             for(var i = 0; i < $scope.wordlists.length; i++){
                 // only un-select current selected ones
                 if($scope.wordlists[i].selected == true)
                     $scope.selectWordlist($scope.wordlists[i]);
             }
-        }
+        };
         $scope.selectAllWordlistSelection = function selectAllWordlistSelection(){
             for(var i = 0; i < $scope.wordlists.length; i++){
                 // only select current un-selected ones
                 if($scope.wordlists[i].selected == false)
                     $scope.selectWordlist($scope.wordlists[i]);
             }
-        }
+        };
         $scope.restoreWordlistSelection = function restoreWordlistSelection(){
             for(var i = 0; i < $scope.wordlists.length; i++){
                 if ($scope.wordlists[i].selected != $scope.isExistingWordlist($scope.wordlists[i]))
                     $scope.selectWordlist($scope.wordlists[i]);
             }
-        }
+        };
         $scope.clickIsShowPingying = function clickIsShowPingying(){
             $scope.isShowPingying = !$scope.isShowPingying;
-        }
+        };
         $scope.updateStatus = function updateStatus(){
             if($scope.wordlists.length == 0){
                 $scope.isDirty = false;
@@ -129,7 +131,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             $scope.isDirty = !(curIdList.length == 0 && selIdList.length == 0);
             $scope.isListReady = (!$scope.isDirty && $scope.getExistingIdList().length > 0);
             $scope.setGenerateControls($scope.isListReady);
-        }
+        };
         $scope.save = function save(){
             $scope.test.wordlists = [];
             for(var i = 0; i < $scope.wordlists.length; i++){
@@ -141,21 +143,42 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             $scope.test.$update({testId:$scope.test.id}, function(response){
                 $scope.showWordlists($scope.test);
             });
-        }
+        };
         $scope.list = function list(){
+            $scope.total_words = 0;
             var words = [];
+            $scope.lines = [];
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
                     var word = $scope.test.wordlists[i].words[j];
+                    if(WordUtils.hasPingying(word))
+                        $scope.total_words ++;
                     word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
-                    words.push(word);
+                    if((word.symbol == undefined || word.symbol.trim() == "")){
+                        if(words.length > 0){
+                            $scope.lines.push(words);
+                            words = [];
+                        }
+                    }else{
+                        words.push(word);
+                    }
+                }
+                if(words.length > 0){
+                    $scope.lines.push(words);
+                    words = [];
                 }
             }
-            $scope.words = words;
+            //$scope.words = words;
+            //$scope.lines.push(words);
             $scope.showWords();
-        }
+        };
+        $scope.hasPingying = function hasPingying(word){
+            return WordUtils.toFormattedWord(word);
+        };
         $scope.generate = function generate(){
             // generates a given size of random words
+            $scope.total_words = 0;
+            $scope.lines = [];
             var wordMap = {};
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
@@ -168,7 +191,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                         wordMap[word.wordPingyingId.word.id] = word;
                     }
                 }
-            }
+            };
             // target size is the number of random words to be taken from the combined list of words
             var targetSize = 0;
             if(!isNaN($scope.num_words)){
@@ -178,11 +201,11 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             var mapToArray = [];
             for(var i in wordMap){
                 mapToArray.push(wordMap[i]);
-            }
+            };
             // if words are less than target size, target size is set to the number of words instead
             if(mapToArray.length < targetSize){
                 targetSize = mapToArray.length;
-            }
+            };
             var words = [];
             while(words.length < targetSize){
                 var random = Math.floor((Math.random() * mapToArray.length)) ;
@@ -191,13 +214,15 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 words.push(word);
                 // remove the pushed word from array to avoid repeats
                 mapToArray.splice(random, 1);
-            }
-            $scope.words = words;
+            };
+            $scope.total_words = words.length;
+            $scope.lines.push(words);
+
             $scope.showWords();
-        }
+        };
         $scope.showWords = function showWords(){
             $scope.isShowWords = true;
-        }
+        };
         $scope.setGenerateControls = function setGenerateControls(bool){
             $scope.isGenerateReady = bool;
         }

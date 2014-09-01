@@ -14,9 +14,9 @@
 			<!--Body content-->
             <div class="wordlist_container">
                 <h1>Wordlists</h1><br>
-                <button ng-click="selectAllWordlistSelection()">All</button>&nbsp;&nbsp;
-                <button ng-click="clearWordlistSelection()">None</button>&nbsp;&nbsp;
-                <button ng-click="restoreWordlistSelection()">Restore</button><br><br>
+                <button class="button_generic" ng-click="selectAllWordlistSelection()">All</button>&nbsp;&nbsp;
+                <button class="button_generic" ng-click="clearWordlistSelection()">None</button>&nbsp;&nbsp;
+                <button class="button_generic" ng-click="restoreWordlistSelection()">Restore</button><br><br>
                 <span ng-repeat="wordlist in wordlists">
                   <input type='checkbox' value='{{wordlist.id}}' ng-checked="wordlist.selected" ng-model="wordlist.selected" ng-click="selectWordlist(wordlist)">{{wordlist.name}}<br/>
                 </span>
@@ -24,19 +24,22 @@
                 <button ng-click="save()" ng-disabled="!isDirty">Save</button><br><br>
                 <button ng-click="list()" ng-disabled="!isListReady">List</button><br><br>
                 Words:<input class="std5digits" type="text" name="num_words" id="num_words" ng-model="num_words" ng-disabled="!isGenerateReady"><br>
-                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()"><br>
                 <button ng-click="generate()" ng-disabled="!isGenerateReady">Generate</button>
             </div>
-            <div class="words_container" ng-if="isShowWords">
+            <div class="lines_container">
                 <h1>Words</h1>
-                <div ng-repeat="word in words" class="container">
-                    <div class="letter">{{word.formatted_word.letter}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.one != undefined" class="number one">{{word.formatted_word.py.one}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.two != undefined" class="number two">{{word.formatted_word.py.two}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.twoBold != undefined" class="number two_bold">{{word.formatted_word.py.twoBold}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.three != undefined" class="number three">{{word.formatted_word.py.three}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.four != undefined" class="number four">{{word.formatted_word.py.four}}</div>
-                    <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
+                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">
+                Total words: {{total_words}}<br>
+                <div ng-repeat="line in lines" ng-if="isShowWords" class="line_container">
+                    <div ng-repeat="word in line" class="words_container" ng-if="isShowWords">
+                        <div class="letter">{{word.formatted_word.letter}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.one != undefined" class="number one">{{word.formatted_word.py.one}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.two != undefined" class="number two">{{word.formatted_word.py.two}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.twoBold != undefined" class="number two_bold">{{word.formatted_word.py.twoBold}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.three != undefined" class="number three">{{word.formatted_word.py.three}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.four != undefined" class="number four">{{word.formatted_word.py.four}}</div>
+                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
+                    </div>
                 </div>
             </div>
 		</div>
