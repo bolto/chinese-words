@@ -4,6 +4,20 @@
 
 var chinesewordControllers = angular.module('chinesewordControllers', []);
 
+//ngEnter directive allows binding of "enter" key to function call
+chinesewordControllers.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
 chinesewordControllers.controller('ProfileListCtrl', ['$scope', 'Profile', 'WordlistProfile', 'Word',
     function($scope, Profile, WordlistProfile, Word) {
         $scope.profiles = Profile.query();
@@ -33,15 +47,11 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
     function ($scope, Test, WordlistAll, WordlistTest, TestWordlist, WordUtils) {
         $scope.tests = Test.list();
         $scope.isDirty = false;
-        $scope.isListReady = false;
-        $scope.isGenerateReady = false;
         $scope.isShowPingying = true;
         $scope.total_words = 0;
         $scope.lines = [];
         $scope.showWordlists = function showWordlists(test){
             $scope.isDirty = false;
-            $scope.isListReady = false;
-            $scope.isGenerateReady = false;
             $scope.test = Test.get({testId:test.id}, function (response) {
                 $scope.wordlists = WordlistAll.query(function (response) {
                     angular.forEach(response, function (item) {
@@ -103,19 +113,28 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.clickIsShowPingying = function clickIsShowPingying(){
             $scope.isShowPingying = !$scope.isShowPingying;
         };
+        $scope.isWordsReady = function isWordsReady(){
+            if($scope.isDirty)
+                return false;
+            if($scope.test === undefined)
+                return false;
+            if($scope.wordlists === undefined)
+                return false;
+            if($scope.wordlists.length == 0)
+                return false;
+            if($scope.getExistingIdList().length == 0)
+                return false;
+            return true;
+        };
         $scope.updateStatus = function updateStatus(){
             if($scope.wordlists.length == 0){
                 $scope.isDirty = false;
-                $scope.isGenerateReady = false;
-                $scope.isListReady = false;
                 return;
             }
             var selIdList = $scope.getSelectedIdList();
             var curIdList = $scope.getExistingIdList();
             if(selIdList.length != curIdList.length){
                 $scope.isDirty = true;
-                $scope.isListReady = false;
-                $scope.setGenerateControls($scope.isListReady);
                 return;
             }
             // remove matching entries from both selIdList and curIdList
@@ -129,8 +148,6 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 }
             }
             $scope.isDirty = !(curIdList.length == 0 && selIdList.length == 0);
-            $scope.isListReady = (!$scope.isDirty && $scope.getExistingIdList().length > 0);
-            $scope.setGenerateControls($scope.isListReady);
         };
         $scope.save = function save(){
             $scope.test.wordlists = [];
@@ -168,8 +185,6 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                     words = [];
                 }
             }
-            //$scope.words = words;
-            //$scope.lines.push(words);
             $scope.showWords();
         };
         $scope.hasPingying = function hasPingying(word){
@@ -223,9 +238,6 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.showWords = function showWords(){
             $scope.isShowWords = true;
         };
-        $scope.setGenerateControls = function setGenerateControls(bool){
-            $scope.isGenerateReady = bool;
-        }
     }]);
 
 chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'WordlistProfile',

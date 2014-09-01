@@ -22,9 +22,9 @@
                 </span>
                 <br><br>
                 <button ng-click="save()" ng-disabled="!isDirty">Save</button><br><br>
-                <button ng-click="list()" ng-disabled="!isListReady">List</button><br><br>
-                Words:<input class="std5digits" type="text" name="num_words" id="num_words" ng-model="num_words" ng-disabled="!isGenerateReady"><br>
-                <button ng-click="generate()" ng-disabled="!isGenerateReady">Generate</button>
+                <button ng-click="list()" ng-disabled="!isWordsReady()">List</button><br><br>
+                Words:<input class="std5digits" type="text" ng-enter="generate()" name="num_words" id="num_words" ng-model="num_words" ng-disabled="!isWordsReady()"><br>
+                <button ng-click="generate()" ng-disabled="!isWordsReady()">Generate</button>
             </div>
             <div class="lines_container">
                 <h1>Words</h1>
