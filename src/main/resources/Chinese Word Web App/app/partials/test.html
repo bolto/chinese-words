@@ -13,7 +13,10 @@
 		<div class="span10">
 			<!--Body content-->
             <div class="wordlist_container">
-                <h1>Wordlists</h1>
+                <h1>Wordlists</h1><br>
+                <button ng-click="selectAllWordlistSelection()">All</button>&nbsp;&nbsp;
+                <button ng-click="clearWordlistSelection()">None</button>&nbsp;&nbsp;
+                <button ng-click="restoreWordlistSelection()">Restore</button><br><br>
                 <span ng-repeat="wordlist in wordlists">
                   <input type='checkbox' value='{{wordlist.id}}' ng-checked="wordlist.selected" ng-model="wordlist.selected" ng-click="selectWordlist(wordlist)">{{wordlist.name}}<br/>
                 </span>

@@ -67,6 +67,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             return list;
         }
         $scope.getExistingIdList = function getExistingIdList(){
+            // returns a list of currently selected wordlists for the given test
             var list = [];
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 list[list.length] = $scope.test.wordlists[i].id;
@@ -76,6 +77,26 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.selectWordlist = function selectWordlist(wordlist){
             wordlist.selected = !wordlist.selected;
             $scope.updateStatus();
+        }
+        $scope.clearWordlistSelection = function clearWordlistSelection(){
+            for(var i = 0; i < $scope.wordlists.length; i++){
+                // only un-select current selected ones
+                if($scope.wordlists[i].selected == true)
+                    $scope.selectWordlist($scope.wordlists[i]);
+            }
+        }
+        $scope.selectAllWordlistSelection = function selectAllWordlistSelection(){
+            for(var i = 0; i < $scope.wordlists.length; i++){
+                // only select current un-selected ones
+                if($scope.wordlists[i].selected == false)
+                    $scope.selectWordlist($scope.wordlists[i]);
+            }
+        }
+        $scope.restoreWordlistSelection = function restoreWordlistSelection(){
+            for(var i = 0; i < $scope.wordlists.length; i++){
+                if ($scope.wordlists[i].selected != $scope.isExistingWordlist($scope.wordlists[i]))
+                    $scope.selectWordlist($scope.wordlists[i]);
+            }
         }
         $scope.clickIsShowPingying = function clickIsShowPingying(){
             $scope.isShowPingying = !$scope.isShowPingying;
@@ -134,8 +155,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             $scope.showWords();
         }
         $scope.generate = function generate(){
-            // this should generate random words, and should have additional
-            // parameters limit max number of words
+            // generates a given size of random words
             var wordMap = {};
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
