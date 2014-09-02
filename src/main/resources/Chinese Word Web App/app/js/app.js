@@ -21,7 +21,7 @@ chinesewordApp.config(['$routeProvider',
             controller: 'TestCtrl'
         }).
         when('/edits', {
-            templateUrl: 'partials/word_edit.html',
+            templateUrl: 'partials/word_edit_prototype.html',
             controller: 'WordEditCtrl'
         }).
         when('/cores', {
