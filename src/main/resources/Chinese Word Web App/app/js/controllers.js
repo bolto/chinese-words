@@ -43,8 +43,8 @@ chinesewordControllers.controller('CoreCtrl', ['$scope', 'Word', 'WordUtils',
             $scope.word.fw = WordUtils.toFormattedWord(word);
         });
     }]);
-chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 'WordlistTest', 'TestWordlist', 'WordUtils',
-    function ($scope, Test, WordlistAll, WordlistTest, TestWordlist, WordUtils) {
+chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 'WordUtils',
+    function ($scope, Test, WordlistAll, WordUtils) {
         $scope.tests = Test.list();
         $scope.isDirty = false;
         $scope.isShowPingying = true;
@@ -81,6 +81,10 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.getExistingIdList = function getExistingIdList(){
             // returns a list of currently selected wordlists for the given test
             var list = [];
+            if($scope.test.wordlists === undefined)
+                return list;
+            if($scope.test.wordlists.length === undefined)
+                return list;
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 list[list.length] = $scope.test.wordlists[i].id;
             }
