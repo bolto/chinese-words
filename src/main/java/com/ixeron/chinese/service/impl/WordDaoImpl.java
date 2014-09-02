@@ -25,6 +25,31 @@ public class WordDaoImpl extends HibernateDao <Word, Integer> implements WordDao
         return list.get(0);
     }
 
+    @Override
+    public List<Word> findBySymbols(String symbols) {
+        if(symbols == null){
+            return null;
+        }
+        if(symbols.trim().equals("")){
+            return null;
+        }
+        String inCondition = "";
+        for(int i = 0; i<symbols.length(); i++){
+            if(!inCondition.equals(""))
+                inCondition += ",";
+            inCondition += String.format("'%s'", symbols.substring(i, i+1));
+        }
+        String queryStr = "SELECT * FROM word WHERE symbol in '({symbols})';";
+        queryStr = queryStr.replace("{symbols}", inCondition);
+        
+        @SuppressWarnings("unchecked")
+        List<Word> list = currentSession().createSQLQuery(queryStr).addEntity(Word.class).list();
+        
+        if(list == null || list.size() == 0)
+            return null;
+        return list;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Word> list(Integer max) {

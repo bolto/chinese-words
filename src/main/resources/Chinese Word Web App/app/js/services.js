@@ -81,7 +81,6 @@ chinesewordServices.factory('WordlistTest', ['$resource',
             });
     }
 ]);
-
 chinesewordServices.factory('Word', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/words/:wordId',

@@ -452,13 +452,16 @@ public class ChineseWordsController {
      */
     @RequestMapping(value = {"/words/", "/words"}, produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView getWords() {
+    public ModelAndView getWords(@RequestParam(value="search", required=false) String search) {
         // TODO: this needs to return a list of words using GET filter parameters
         List<Word> words = null;
 
         List<WordDto> wordDtos = new ArrayList<WordDto>();
 
-        words = wordDao.list(5);
+        if(search != null && !search.trim().equals("")){
+            words = wordDao.findBySymbols(search);
+        }
+//        words = wordDao.list(5);
         int counter = 0;
         if(words == null || words.size() ==0){
             return new ModelAndView(jsonView_i, DATA_FIELD, "No words returned.");
@@ -486,7 +489,7 @@ public class ChineseWordsController {
             }
             wordDtos.add(wordDto);
         }
-        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
+//        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
         return new ModelAndView(jsonView_i, DATA_FIELD, wordDtos);
     }
     

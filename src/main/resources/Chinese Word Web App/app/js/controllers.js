@@ -252,7 +252,7 @@ chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'WordlistProfil
     }]);
 chinesewordControllers.controller('WordEditCtrl', ['$scope', '$routeParams', 'Word',
     function($scope, $routeParams, Word) {
-        $scope.wordToEdit = Test.find(word);
+        $scope.wordToEdit = Word.find(word);
         $scope.words = Word.query();
         for(var i=0, len=$scope.words.length; i<len; i++){
 

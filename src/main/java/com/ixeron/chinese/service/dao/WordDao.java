@@ -9,9 +9,12 @@ public interface WordDao extends GenericDao<Word, Integer> {
 
     public Word findBySymbol(String symbol);
     
+    public List<Word> findBySymbols(String symbols);
+
     public List<Word> list(Integer max);
     
     public List<Word> list(String wordList);
 
     public Map<String, Word> listToMap(String wordList);
+
 }
