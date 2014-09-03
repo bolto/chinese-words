@@ -8,7 +8,14 @@ var chinesewordApp = angular.module('chinesewordApp', [
   'chinesewordServices',
   'chinesewordCommonUtils'
 ]);
-
+chinesewordApp.filter('range', function() {
+    return function(input, total) {
+        total = parseInt(total);
+        for (var i=0; i<total; i++)
+            input.push(i);
+        return input;
+    };
+});
 chinesewordApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.

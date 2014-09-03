@@ -34,7 +34,8 @@ chinesewordServices.factory('Word', ['$resource',
 chinesewordServices.factory('WordPingying', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/wordpingyings/', {}, {
-            list: {method:'GET', params:{word:'@word'}, isArray:true}
+            list: {method:'GET', params:{word:'@word'}, isArray:true},
+            update: {method:'PUT', params:{}}
         });
     }]);
 chinesewordServices.factory('TestWordlist', ['$resource',

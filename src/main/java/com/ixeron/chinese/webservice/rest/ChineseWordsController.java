@@ -464,6 +464,16 @@ public class ChineseWordsController {
         List<WordPingying> list = wordPingyingDao.listByWordId(word.getId());
         return list;
     }
+
+    @RequestMapping(value = {"/wordpingyings/", "/wordpingyings"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public WordPingying saveTest(@RequestBody WordPingying wordPingying_p, HttpServletResponse httpResponse_p) {
+		wordPingyingDao.update(wordPingying_p);
+        httpResponse_p.setStatus(HttpStatus.OK.value()); 
+        return wordPingying_p;
+    }
+
+    
     /**
      * Gets all words.
      * RequestParam("size") Integer size, RequestParam("wordlist") String wordList
