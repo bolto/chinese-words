@@ -21,7 +21,22 @@ chinesewordServices.factory('Test', ['$resource',
             delete:{method:'DELETE', params:{entryId:'@entryId'}}
         });
     }]);
-
+chinesewordServices.factory('Word', ['$resource',
+    function($resource){
+        return $resource('http://localhost:8080/api/words/', {}, {
+            list: {method:'GET', params:{search:'@search'}, isArray:true},
+            get: {method:'GET', params:{wordId:'@wordId'}, isArray:false},
+            post:{method:'POST', params:{wordId:''}},
+            update: {method:'PUT', params:{wordId:'@wordId'}},
+            delete:{method:'DELETE', params:{wordId:'@wordId'}}
+        });
+    }]);
+chinesewordServices.factory('WordPingying', ['$resource',
+    function($resource){
+        return $resource('http://localhost:8080/api/wordpingyings/', {}, {
+            list: {method:'GET', params:{word:'@word'}, isArray:true}
+        });
+    }]);
 chinesewordServices.factory('TestWordlist', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/tests/:testId/wordlists', {}, {
@@ -81,14 +96,3 @@ chinesewordServices.factory('WordlistTest', ['$resource',
             });
     }
 ]);
-chinesewordServices.factory('Word', ['$resource',
-    function($resource){
-        return $resource('http://localhost:8080/api/words/:wordId',
-            {}, {
-                list: {method:'GET', params:{wordId:''}, isArray:true},
-                get: {method:'GET', params:{wordId:'@wordId'}, isArray:false},
-                post:{method:'POST', params:{wordId:''}},
-                update: {method:'PUT', params:{wordId:'@wordId'}},
-                delete:{method:'DELETE', params:{wordId:'@wordId'}}
-        });
-    }]);

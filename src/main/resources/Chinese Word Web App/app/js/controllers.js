@@ -18,6 +18,22 @@ chinesewordControllers.directive('ngEnter', function () {
         });
     };
 });
+chinesewordControllers.controller('WordEditCtrl', ['$scope', 'WordUtils', 'Word', 'WordPingying',
+    function($scope, WordUtils, Word, WordPingying) {
+        $scope.loadPingying = function loadPingying(){
+            $scope.wordpingyings = WordPingying.list({word : $scope.search}, function (response){
+                $scope.word = $scope.wordpingyings[0].word;
+                $scope.word.formatted_word = WordUtils.toFormattedWord($scope.word);
+                $scope.pingyings = [];
+                for(var i = 0; i<$scope.wordpingyings.length; i++){
+                    var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
+                    py.listOrder = $scope.wordpingyings[i].listOrder;
+                    $scope.pingyings.push(py);
+                }
+            });
+        }
+    }
+]);
 chinesewordControllers.controller('ProfileListCtrl', ['$scope', 'Profile', 'WordlistProfile', 'Word',
     function($scope, Profile, WordlistProfile, Word) {
         $scope.profiles = Profile.query();
@@ -244,19 +260,11 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         };
     }]);
 
-chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'WordlistProfile',
+chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'Wordlist',
     function($scope, Wordlist) {
-    $scope.getWordlistsByProfileId = function(id){
+        $scope.getWordlistsByProfileId = function(id){
     	$scope.wordlists = Wordlist.query({profileId:id});
     }
-    }]);
-chinesewordControllers.controller('WordEditCtrl', ['$scope', '$routeParams', 'Word',
-    function($scope, $routeParams, Word) {
-        $scope.wordToEdit = Word.find(word);
-        $scope.words = Word.query();
-        for(var i=0, len=$scope.words.length; i<len; i++){
-
-        }
     }]);
 chinesewordControllers.controller('ProfileCtrl', ['$scope', 'Word',
     function($scope, Word) {

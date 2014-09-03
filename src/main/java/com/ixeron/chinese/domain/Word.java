@@ -25,7 +25,7 @@ public class Word {
     private String symbol;
     private Date created;
     private Date updated;
-    private Set<Pingying> pingyings = new HashSet<Pingying>(0);
+//    private Set<Pingying> pingyings = new HashSet<Pingying>(0);
 
     /**
      * @return the id
@@ -84,13 +84,13 @@ public class Word {
         this.updated = updated;
     }
     
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "word_pingying", joinColumns = { @JoinColumn(name = "word_id") }, inverseJoinColumns = { @JoinColumn(name = "pingying_id") })
-    public Set<Pingying> getPingyings(){
-        return this.pingyings;
-    }
-
-    public void setPingyings(Set<Pingying> pingyings){
-        this.pingyings = pingyings;
-    }
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JoinTable(name = "word_pingying", joinColumns = { @JoinColumn(name = "word_id") }, inverseJoinColumns = { @JoinColumn(name = "pingying_id") })
+//    public Set<Pingying> getPingyings(){
+//        return this.pingyings;
+//    }
+//
+//    public void setPingyings(Set<Pingying> pingyings){
+//        this.pingyings = pingyings;
+//    }
 }

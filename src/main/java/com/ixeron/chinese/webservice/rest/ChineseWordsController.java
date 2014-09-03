@@ -43,6 +43,7 @@ import com.ixeron.chinese.domain.PingyingCharacter;
 import com.ixeron.chinese.domain.Profile;
 import com.ixeron.chinese.domain.ProfileWordlist;
 import com.ixeron.chinese.domain.ProfileWordlistId;
+import com.ixeron.chinese.domain.Test;
 import com.ixeron.chinese.domain.Tone;
 import com.ixeron.chinese.domain.Word;
 import com.ixeron.chinese.domain.WordPingying;
@@ -410,23 +411,23 @@ public class ChineseWordsController {
             word = words.get(wordChar);
             WordDto wordDto = new WordDto();
             wordDto.setSymbol(word.getSymbol());
-            for(Pingying py : word.getPingyings()){
-                String pyStr = "";
-
-                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-                }
-                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-                }
-                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-                }
-                if(py.getToneId() != 1){
-                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-                }
-                wordDto.addPingying(pyStr);
-            }
+//            for(Pingying py : word.getPingyings()){
+//                String pyStr = "";
+//
+//                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
+//                }
+//                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
+//                }
+//                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
+//                }
+//                if(py.getToneId() != 1){
+//                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
+//                }
+//                wordDto.addPingying(pyStr);
+//            }
             wordDtos.add(wordDto);
             wordsStr += wordDto.toString() + "<br>";
         }
@@ -446,17 +447,35 @@ public class ChineseWordsController {
     }
 
     /**
+     * Gets all wordPingyings.
+     * RequestParam("word") String word 
+     * @return all wordPingyings
+     */
+    @RequestMapping(value = {"/wordpingyings/", "/wordpingyings"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public List<WordPingying> getWordPingyings(@RequestParam(value="word", required=true) String word_p) {
+    	
+        if(word_p.trim().equals("") || word_p.trim().length() != 1){
+        	return null;
+        }
+        Word word = wordDao.findBySymbol(word_p);
+        if(word == null)
+        	return null;
+        List<WordPingying> list = wordPingyingDao.listByWordId(word.getId());
+        return list;
+    }
+    /**
      * Gets all words.
      * RequestParam("size") Integer size, RequestParam("wordlist") String wordList
      * @return all words
      */
-    @RequestMapping(value = {"/words/", "/words"}, produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = {"/words/", "/words"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView getWords(@RequestParam(value="search", required=false) String search) {
+    public List<Word> getWords(@RequestParam(value="search", required=false) String search) {
         // TODO: this needs to return a list of words using GET filter parameters
         List<Word> words = null;
 
-        List<WordDto> wordDtos = new ArrayList<WordDto>();
+//        List<WordDto> wordDtos = new ArrayList<WordDto>();
 
         if(search != null && !search.trim().equals("")){
             words = wordDao.findBySymbols(search);
@@ -464,33 +483,34 @@ public class ChineseWordsController {
 //        words = wordDao.list(5);
         int counter = 0;
         if(words == null || words.size() ==0){
-            return new ModelAndView(jsonView_i, DATA_FIELD, "No words returned.");
+            return null;
         }
-        for(Word word : words){
-            counter ++;
-            WordDto wordDto = new WordDto();
-            wordDto.setSymbol(word.getSymbol());
-            for(Pingying py : word.getPingyings()){
-                String pyStr = "";
-
-                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-                }
-                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-                }
-                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-                }
-                if(py.getToneId() != 1){
-                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-                }
-                wordDto.addPingying(pyStr);
-            }
-            wordDtos.add(wordDto);
-        }
-//        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
-        return new ModelAndView(jsonView_i, DATA_FIELD, wordDtos);
+        return words;
+//        for(Word word : words){
+//            counter ++;
+//            WordDto wordDto = new WordDto();
+//            wordDto.setSymbol(word.getSymbol());
+//            for(Pingying py : word.getPingyings()){
+//                String pyStr = "";
+//
+//                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
+//                }
+//                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
+//                }
+//                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
+//                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
+//                }
+//                if(py.getToneId() != 1){
+//                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
+//                }
+//                wordDto.addPingying(pyStr);
+//            }
+//            wordDtos.add(wordDto);
+//        }
+////        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
+//        return wordDtos;
     }
     
     /**

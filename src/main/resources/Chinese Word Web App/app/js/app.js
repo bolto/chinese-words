@@ -14,7 +14,7 @@ chinesewordApp.config(['$routeProvider',
     $routeProvider.
         when('/profiles', {
             templateUrl: 'partials/profiles_div.html',
-            controller: 'ProfileListCtrl'
+            controller: 'ProfileCtrl'
         }).
         when('/tests', {
             templateUrl: 'partials/test.html',
@@ -24,19 +24,11 @@ chinesewordApp.config(['$routeProvider',
             templateUrl: 'partials/word_edit_prototype.html',
             controller: 'WordEditCtrl'
         }).
-        when('/cores', {
-            templateUrl: 'partials/word_edit.html',
-            controller: 'WordEditCtrl'
-        }).
         when('/profiles/:profileId/wordlists', {
             templateUrl: 'partials/wordlist-list.html',
             controller: 'WordlistListCtrl'
         }).
-        when('/profiles/:profileId/wordlists/:wordlistId', {
-            templateUrl: 'partials/word-list.html',
-            controller: 'WordCtrl'
-        }).
-      otherwise({
-        redirectTo: '/profiles'
+        otherwise({
+            redirectTo: '/profiles'
       });
   }]);

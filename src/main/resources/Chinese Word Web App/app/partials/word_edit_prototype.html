@@ -7,62 +7,28 @@
 		</div>
 		<div class="span10">
 			<!--Body content-->
+            Words:<input class="std5digits" type="text" ng-enter="loadPingying()" name="search" id="search" ng-model="search" /><br>
+
             <div class="word_container_edit">
-                <div class="letter_edit">間</div>
+                <div class="letter_edit">{{word.symbol}}</div>
                 <div class="pys_container_edit">
-                    <div class="py_container_edit_1">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
+                    <div class="py_container_edit_1" ng-if="pingyings[0] != undefined">
+                        <div class="radio_div_edit"><input class="radio" type="radio" name="group" value="1"  /></div>
+                        <div ng-if="pingyings[0].one != undefined" class="one_edit">{{pingyings[0].one}}</div>
+                        <div ng-if="pingyings[0].two != undefined" class="two_edit">{{pingyings[0].two}}</div>
+                        <div ng-if="pingyings[0].twoBold != undefined" class="two_bold_edit">{{pingyings[0].twoBold}}</div>
+                        <div ng-if="pingyings[0].three != undefined" class="three_edit">{{pingyings[0].three}}</div>
+                        <div ng-if="pingyings[0].four != undefined" class="four_edit">{{pingyings[0].four}}</div>
+                        <div ng-if="pingyings[0].tone != undefined" class="tone_edit">{{pingyings[0].tone}}</div>
                     </div>
-                    <div class="py_container_edit_2">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_3">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_4">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_5">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_6">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
+                    <div class="py_container_edit_2" ng-if="pingyings[1] != undefined">
+                        <div class="radio_div_edit"><input class="radio" type="radio" name="group" value="2"  /></div>
+                        <div ng-if="pingyings[1].one != undefined" class="one_edit">{{pingyings[1].one}}</div>
+                        <div ng-if="pingyings[1].two != undefined" class="two_edit">{{pingyings[1].two}}</div>
+                        <div ng-if="pingyings[1].twoBold != undefined" class="two_bold_edit">{{pingyings[1].twoBold}}</div>
+                        <div ng-if="pingyings[1].three != undefined" class="three_edit">{{pingyings[1].three}}</div>
+                        <div ng-if="pingyings[1].four != undefined" class="four_edit">{{pingyings[1].four}}</div>
+                        <div ng-if="pingyings[1].tone != undefined" class="tone_edit">{{pingyings[1].tone}}</div>
                     </div>
                 </div>
             </div>
