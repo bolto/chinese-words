@@ -49,7 +49,7 @@ public class WordPingyingDaoImpl extends HibernateDao <WordPingying, Integer> im
 
 	@Override
 	public List<WordPingying> listByWordId(Integer id) {
-        String queryStr = "SELECT * FROM word_pingying wpy WHERE wpy.word_id = {word_id};";
+        String queryStr = "SELECT * FROM word_pingying wpy WHERE wpy.word_id = {word_id} ORDER BY wpy.list_order ASC;";
         queryStr = queryStr.replace("{word_id}", id.toString());
         
         @SuppressWarnings("unchecked")

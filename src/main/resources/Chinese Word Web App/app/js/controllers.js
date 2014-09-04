@@ -12,12 +12,53 @@ chinesewordControllers.directive('ngEnter', function () {
                 scope.$apply(function (){
                     scope.$eval(attrs.ngEnter);
                 });
-
                 event.preventDefault();
             }
         });
     };
 });
+chinesewordControllers.controller('WordlistWordCtrl', ['$scope', 'WordUtils', 'Word', 'WordPingying',
+    function($scope, WordUtils, Word, WordPingying) {
+        $scope.isDirty = false;
+        $scope.loadPingying = function loadPingying(){
+            $scope.isDirty = false;
+            $scope.wordpingyings = WordPingying.list({word : $scope.search}, function (response){
+                $scope.word = $scope.wordpingyings[0].word;
+                $scope.pingyings = [];
+                for(var i = 0; i<$scope.wordpingyings.length; i++){
+                    var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
+                    py.listOrder = $scope.wordpingyings[i].listOrder;
+                    py.id = $scope.wordpingyings[i].pingying.id;
+                    if(py.listOrder == 1){
+                        $scope.defaultPingying = i;
+                        $scope.selected = i;
+                    }
+                    $scope.pingyings.push(py);
+                }
+            });
+        }
+        $scope.save = function save(){
+            if($scope.defaultPingying == $scope.selected)
+                return;
+            for(var i = 0; i<$scope.wordpingyings.length; i++){
+                if($scope.selected == i){
+                    $scope.wordpingyings[i].listOrder = 1;
+                }else{
+                    if(i == 0)
+                        $scope.wordpingyings[i].listOrder = 2;
+                    else
+                        $scope.wordpingyings[i].listOrder = i+1;
+                }
+                $scope.wordpingyings[i].$update({}, function(response){});
+            }
+        };
+        $scope.setDefaultPingying = function setDefaultPingying(i){
+            $scope.selected = i;
+            $scope.isDirty = ($scope.defaultPingying != $scope.selected);
+        }
+
+    }
+]);
 chinesewordControllers.controller('WordEditCtrl', ['$scope', 'WordUtils', 'Word', 'WordPingying',
     function($scope, WordUtils, Word, WordPingying) {
         $scope.isDirty = false;

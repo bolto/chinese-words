@@ -34,7 +34,7 @@ ul {
 .letter {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 10%;
     width: 650%;
     bottom: 0;
     display: inline-block;
@@ -52,14 +52,14 @@ ul {
 .tone {
     position: absolute;
     right: 0;
-    top: 60%;
+    top: 45%;
     width: 15%;
     font-size: 20px;
     text-align: center;
     text-indent: 5px;
 }
 .one {
-    top: 30%;
+    top: 20%;
     font-size: 20px;
 }
 .two {
