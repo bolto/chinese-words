@@ -25,7 +25,6 @@ chinesewordControllers.controller('WordEditCtrl', ['$scope', 'WordUtils', 'Word'
             $scope.isDirty = false;
             $scope.wordpingyings = WordPingying.list({word : $scope.search}, function (response){
                 $scope.word = $scope.wordpingyings[0].word;
-                $scope.word.formatted_word = WordUtils.toFormattedWord($scope.word);
                 $scope.pingyings = [];
                 for(var i = 0; i<$scope.wordpingyings.length; i++){
                     var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
@@ -40,11 +39,16 @@ chinesewordControllers.controller('WordEditCtrl', ['$scope', 'WordUtils', 'Word'
             });
         }
         $scope.save = function save(){
-            for(var i = 0; i<$scope.wordpingyings.length; i++) {
+            if($scope.defaultPingying == $scope.selected)
+                return;
+            for(var i = 0; i<$scope.wordpingyings.length; i++){
                 if($scope.selected == i){
                     $scope.wordpingyings[i].listOrder = 1;
                 }else{
-                    $scope.wordpingyings[i].listOrder = i+2;
+                    if(i == 0)
+                        $scope.wordpingyings[i].listOrder = 2;
+                    else
+                        $scope.wordpingyings[i].listOrder = i+1;
                 }
                 $scope.wordpingyings[i].$update({}, function(response){});
             }
