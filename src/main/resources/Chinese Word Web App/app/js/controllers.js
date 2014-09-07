@@ -341,6 +341,10 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.showWords = function showWords(){
             $scope.isShowWords = true;
         };
+        $scope.editWordlistWordPingying = function editWordlistWordPingying(word){
+            if($scope.isPingyingEditLinkEnabled)
+                window.open("http://localhost/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
+        }
     }]);
 
 chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'Wordlist',

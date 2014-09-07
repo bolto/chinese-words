@@ -125,3 +125,6 @@ a.disabled {
     cursor: default;
     text-decoration: none;
 }
+a{
+    cursor: pointer;
+}
