@@ -28,11 +28,12 @@
             </div>
             <div class="lines_container">
                 <h1>Words</h1>
-                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">
+                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">&nbsp;&nbsp;&nbsp;
+                Enable Pingying Edit Link: <input type='checkbox' ng-checked="isPingyingEditLinkEnabled" ng-click="clickIsPingyingEditLinkEnabled()">&nbsp;&nbsp;&nbsp;
                 Total words: {{total_words}}<br>
                 <div ng-repeat="line in lines" ng-if="isShowWords" class="line_container">
                     <div ng-repeat="word in line" class="words_container" ng-if="isShowWords">
-                        <div class="letter">{{word.formatted_word.letter}}</div>
+                        <div class="letter"><a ng-href="http://localhost/chinese/index.html#/wordlist_word?id={{word.id}}" ng-target="_blank" ng-disabled="!isPingyingEditLinkEnabled" a-disabled="!isPingyingEditLinkEnabled">{{word.formatted_word.letter}}</a></div>
                         <div ng-show="isShowPingying" ng-if="word.formatted_word.py.one != undefined" class="number one">{{word.formatted_word.py.one}}</div>
                         <div ng-show="isShowPingying" ng-if="word.formatted_word.py.two != undefined" class="number two">{{word.formatted_word.py.two}}</div>
                         <div ng-show="isShowPingying" ng-if="word.formatted_word.py.twoBold != undefined" class="number two_bold">{{word.formatted_word.py.twoBold}}</div>

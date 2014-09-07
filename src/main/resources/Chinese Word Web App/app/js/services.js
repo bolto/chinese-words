@@ -38,6 +38,13 @@ chinesewordServices.factory('WordPingying', ['$resource',
             update: {method:'PUT', params:{}}
         });
     }]);
+chinesewordServices.factory('WordlistWord', ['$resource',
+    function($resource){
+        return $resource('http://localhost:8080/api/wordlistword/:id', {}, {
+            list: {method:'GET', params:{id:'@id'}},
+            update: {method:'PUT', params:{id:'@id'}}
+        });
+    }]);
 chinesewordServices.factory('TestWordlist', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/tests/:testId/wordlists', {}, {

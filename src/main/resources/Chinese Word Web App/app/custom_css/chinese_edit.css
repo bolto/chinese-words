@@ -120,3 +120,8 @@
     height: 5px;
     text-align: center;
 }
+a.disabled {
+    color: black;
+    cursor: default;
+    text-decoration: none;
+}

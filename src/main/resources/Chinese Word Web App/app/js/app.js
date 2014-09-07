@@ -7,6 +7,7 @@ var chinesewordApp = angular.module('chinesewordApp', [
   'chinesewordControllers',
   'chinesewordServices',
   'chinesewordCommonUtils',
+  'chinesewordDirectives',
   'ui.bootstrap'
 ]);
 var ModalDemoCtrl = function ($scope, $modal, $log) {
@@ -60,8 +61,8 @@ chinesewordApp.filter('range', function() {
         return input;
     };
 });
-chinesewordApp.config(['$routeProvider',
-  function($routeProvider) {
+chinesewordApp.config(['$routeProvider', '$locationProvider',
+  function($routeProvider, $locationProvider) {
     $routeProvider.
         when('/profiles', {
             templateUrl: 'partials/profiles_div.html',
@@ -75,11 +76,16 @@ chinesewordApp.config(['$routeProvider',
             templateUrl: 'partials/word_edit_prototype.html',
             controller: 'WordEditCtrl'
         }).
+        when('/wordlist_word', {
+            templateUrl: 'partials/wl_word_py_select.html',
+            controller: 'WordlistWordEditCtrl'
+        }).
         when('/wordlistwords', {
             templateUrl: 'partials/wordlist_word.html',
             controller: 'WordlistWordCtrl'
         }).
         otherwise({
-            redirectTo: '/profiles'
+            redirectTo: '/tests'
       });
+      //$locationProvider.html5Mode(true);
   }]);

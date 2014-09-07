@@ -17,46 +17,58 @@ chinesewordControllers.directive('ngEnter', function () {
         });
     };
 });
-chinesewordControllers.controller('WordlistWordCtrl', ['$scope', 'WordUtils', 'Word', 'WordPingying',
-    function($scope, WordUtils, Word, WordPingying) {
-        $scope.isDirty = false;
-        $scope.loadPingying = function loadPingying(){
-            $scope.isDirty = false;
-            $scope.wordpingyings = WordPingying.list({word : $scope.search}, function (response){
-                $scope.word = $scope.wordpingyings[0].word;
-                $scope.pingyings = [];
-                for(var i = 0; i<$scope.wordpingyings.length; i++){
-                    var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
-                    py.listOrder = $scope.wordpingyings[i].listOrder;
-                    py.id = $scope.wordpingyings[i].pingying.id;
-                    if(py.listOrder == 1){
-                        $scope.defaultPingying = i;
-                        $scope.selected = i;
+chinesewordControllers.controller('WordlistWordEditCtrl', ['$rootScope', '$scope', '$location', '$routeParams', '$route', 'WordUtils', 'WordlistWord', 'WordPingying',
+    function($rootScope, $scope, $location, $routeParams, $route, WordUtils, WordlistWord, WordPingying) {
+        $rootScope.$on('$routeChangeSuccess', function () {
+            $scope.id = $location.search()['id'];
+            console.log($scope.id);
+            $scope.word = WordlistWord.list({id : $scope.id}, function(response){
+                console.log($scope.word.symbol);
+                $scope.wordpingyings = WordPingying.list({word : $scope.word.symbol}, function (response){
+                    $scope.pingyings = [];
+                    for(var i = 0; i<$scope.wordpingyings.length; i++){
+                        var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
+                        py.listOrder = $scope.wordpingyings[i].listOrder;
+                        py.id = $scope.wordpingyings[i].pingying.id;
+                        if(py.listOrder == 1){
+                            $scope.defaultPingying = i;
+                            $scope.selected = i;
+                        }
+                        $scope.pingyings.push(py);
                     }
-                    $scope.pingyings.push(py);
-                }
+                });
             });
-        }
-        $scope.save = function save(){
-            if($scope.defaultPingying == $scope.selected)
-                return;
-            for(var i = 0; i<$scope.wordpingyings.length; i++){
-                if($scope.selected == i){
-                    $scope.wordpingyings[i].listOrder = 1;
-                }else{
-                    if(i == 0)
-                        $scope.wordpingyings[i].listOrder = 2;
-                    else
-                        $scope.wordpingyings[i].listOrder = i+1;
-                }
-                $scope.wordpingyings[i].$update({}, function(response){});
-            }
+        });
+        $scope.init = function init(){
+            $scope.id = $location.search()['id'];
+            console.log($scope.id);
+            $scope.word = WordlistWord.list({id : $scope.id}, function(response){
+                console.log($scope.word.symbol);
+                $scope.wordpingyings = WordPingying.list({word : $scope.word.symbol}, function (response){
+                    $scope.pingyings = [];
+                    for(var i = 0; i<$scope.wordpingyings.length; i++){
+                        var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
+                        if ($scope.word.pingying.id == $scope.wordpingyings[i].pingying.id){
+                            $scope.currentPingying = i;
+                            $scope.selected = i;
+                        }
+                        py.id = $scope.wordpingyings[i].pingying.id;
+                        $scope.pingyings.push(py);
+                    }
+                });
+            });
         };
-        $scope.setDefaultPingying = function setDefaultPingying(i){
+        $scope.isDirty = false;
+        $scope.save = function save(){
+            if($scope.currentPingying == $scope.selected)
+                return;
+            $scope.word.wordPingyingId.pingying.id = $scope.wordpingyings[$scope.selected].pingying.id;
+            $scope.word.$update({id : $scope.word.id}, function (response){});
+        };
+        $scope.setPingying = function setPingying(i){
             $scope.selected = i;
-            $scope.isDirty = ($scope.defaultPingying != $scope.selected);
+            $scope.isDirty = ($scope.currentPingying != $scope.selected);
         }
-
     }
 ]);
 chinesewordControllers.controller('WordEditCtrl', ['$scope', 'WordUtils', 'Word', 'WordPingying',
@@ -131,6 +143,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.tests = Test.list();
         $scope.isDirty = false;
         $scope.isShowPingying = true;
+        $scope.isPingyingEditLinkEnabled = false;
         $scope.total_words = 0;
         $scope.lines = [];
         $scope.showWordlists = function showWordlists(test){
@@ -199,6 +212,9 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         };
         $scope.clickIsShowPingying = function clickIsShowPingying(){
             $scope.isShowPingying = !$scope.isShowPingying;
+        };
+        $scope.clickIsPingyingEditLinkEnabled = function clickIsPingyingEditLinkEnabled(){
+            $scope.isPingyingEditLinkEnabled = !$scope.isPingyingEditLinkEnabled;
         };
         $scope.isWordsReady = function isWordsReady(){
             if($scope.isDirty)

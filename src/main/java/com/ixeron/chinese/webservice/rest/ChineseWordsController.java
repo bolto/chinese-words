@@ -473,54 +473,45 @@ public class ChineseWordsController {
         return wordPingying_p;
     }
 
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword//{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public WordlistWord saveWordlistWord(@RequestBody WordlistWord wordlistword_p, HttpServletResponse httpResponse_p) {
+        wordlistWordDao.update(wordlistword_p);
+        httpResponse_p.setStatus(HttpStatus.OK.value()); 
+        return wordlistword_p;
+    }
+
+    /**
+     * Return the detailed word data of a given Chinese word.  Request parameter search should contain only word Chinese word. 
+     * @return a word object matching supplied search word
+     */
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword//{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public WordlistWord getWordlistWordById(@PathVariable("wordlistwordId") Integer wordlistwordId_p) {
+        WordlistWord word = null;
+
+        word = wordlistWordDao.find(wordlistwordId_p);
+
+        return word;
+    }
     
     /**
-     * Gets all words.
-     * RequestParam("size") Integer size, RequestParam("wordlist") String wordList
-     * @return all words
+     * Return the detailed word data of a given Chinese word.  Request parameter search should contain only word Chinese word. 
+     * @return a word object matching supplied search word
      */
     @RequestMapping(value = {"/words/", "/words"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ResponseBody
-    public List<Word> getWords(@RequestParam(value="search", required=false) String search) {
-        // TODO: this needs to return a list of words using GET filter parameters
+    public List<Word> findWord(@RequestParam(value="search", required=false) String search) {
         List<Word> words = null;
 
-//        List<WordDto> wordDtos = new ArrayList<WordDto>();
-
         if(search != null && !search.trim().equals("")){
-            words = wordDao.findBySymbols(search);
+            words = wordDao.findBySymbols(search.substring(0,1));
         }
-//        words = wordDao.list(5);
-        int counter = 0;
+
         if(words == null || words.size() ==0){
             return null;
         }
         return words;
-//        for(Word word : words){
-//            counter ++;
-//            WordDto wordDto = new WordDto();
-//            wordDto.setSymbol(word.getSymbol());
-//            for(Pingying py : word.getPingyings()){
-//                String pyStr = "";
-//
-//                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-//                }
-//                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-//                }
-//                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-//                }
-//                if(py.getToneId() != 1){
-//                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-//                }
-//                wordDto.addPingying(pyStr);
-//            }
-//            wordDtos.add(wordDto);
-//        }
-////        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
-//        return wordDtos;
     }
     
     /**
