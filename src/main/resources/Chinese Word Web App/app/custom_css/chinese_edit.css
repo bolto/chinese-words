@@ -120,11 +120,12 @@
     height: 5px;
     text-align: center;
 }
-a.disabled {
+a.disabled, a.disabled:hover, a.disabled:visited, a.disabled:link, a.disabled:active {
     color: black;
     cursor: default;
-    text-decoration: none;
+    text-decoration: none!important;
 }
 a{
     cursor: pointer;
+    text-decoration: none!important;
 }
