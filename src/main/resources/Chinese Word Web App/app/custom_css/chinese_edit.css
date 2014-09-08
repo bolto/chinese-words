@@ -1,8 +1,9 @@
 .word_container_edit {
-    position: relative;
+    position: absolute;
     width: 200px;
     height: 52px;
-    background: silver;
+    background: white;
+    float:right;
 }
 .letter_edit {
     position: relative;

@@ -138,8 +138,8 @@ chinesewordControllers.controller('CoreCtrl', ['$scope', 'Word', 'WordUtils',
             $scope.word.fw = WordUtils.toFormattedWord(word);
         });
     }]);
-chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 'WordUtils',
-    function ($scope, Test, WordlistAll, WordUtils) {
+chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 'WordUtils', 'WordPingying',
+    function ($scope, Test, WordlistAll, WordUtils, WordPingying) {
         $scope.tests = Test.list();
         $scope.isDirty = false;
         $scope.isShowPingying = true;
@@ -157,6 +157,28 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 });
             });
         };
+        $scope.hidePingyingSelect = function hidePingyingSelect(word){
+            word.isShowPingyingSelect = false;
+        }
+        $scope.showPingyingSelect = function showPingyingSelect(word){
+            if(word.pingyings == undefined){
+                var wordpingyings = WordPingying.list({word : word.symbol}, function (response){
+                    word.pingyings = [];
+                    for(var i = 0; i<wordpingyings.length; i++){
+                        var py = WordUtils.toFormattedPingying(wordpingyings[i].pingying);
+                        if (word.pingying.id == wordpingyings[i].pingying.id){
+                            word.currentPingying = i;
+                            word.selected = i;
+                        }
+                        py.id = wordpingyings[i].pingying.id;
+                        word.pingyings.push(py);
+                    }
+                    word.isShowPingyingSelect = true;
+                });
+            }else{
+                word.isShowPingyingSelect = true;
+            }
+        }
         $scope.isExistingWordlist = function isExistingWordlist(wordlist){
             for(var i=0; i< $scope.test.wordlists.length; i++){
                 if(wordlist.id == $scope.test.wordlists[i].id){
@@ -271,6 +293,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             for(var i = 0; i < $scope.test.wordlists.length; i++){
                 for(var j = 0; j < $scope.test.wordlists[i].words.length; j++){
                     var word = $scope.test.wordlists[i].words[j];
+                    word.isShowPingyingSelect = false;
                     if(WordUtils.hasPingying(word))
                         $scope.total_words ++;
                     word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
