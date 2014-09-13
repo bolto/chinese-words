@@ -35,7 +35,7 @@ ul {
     position: absolute;
     left: 0;
     top: 10%;
-    width: 650%;
+    /*width: 650%;*/
     bottom: 0;
     display: inline-block;
     font-size: 36px;
