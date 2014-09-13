@@ -161,8 +161,13 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             word.isShowPingyingSelect = false;
         }
         $scope.showPingyingSelect = function showPingyingSelect(word){
+            word.isShowPingyingSelect = true;
+            if(word.pys_container_width == undefined){
+                word.pys_container_width = "25px";
+            }
             if(word.pingyings == undefined){
                 var wordpingyings = WordPingying.list({word : word.symbol}, function (response){
+                    word.pys_container_width = "" + wordpingyings.length * 25 + "px";
                     word.pingyings = [];
                     for(var i = 0; i<wordpingyings.length; i++){
                         var py = WordUtils.toFormattedPingying(wordpingyings[i].pingying);
@@ -173,10 +178,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                         py.id = wordpingyings[i].pingying.id;
                         word.pingyings.push(py);
                     }
-                    word.isShowPingyingSelect = true;
                 });
-            }else{
-                word.isShowPingyingSelect = true;
             }
         }
         $scope.isExistingWordlist = function isExistingWordlist(wordlist){

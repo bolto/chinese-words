@@ -41,20 +41,23 @@
                             <div ng-show="isShowPingying" ng-if="word.formatted_word.py.three != undefined" class="number three">{{word.formatted_word.py.three}}</div>
                             <div ng-show="isShowPingying" ng-if="word.formatted_word.py.four != undefined" class="number four">{{word.formatted_word.py.four}}</div>
                             <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
-                            <div class="dropdown pull-right word_container_edit" ng-show="word.isShowPingyingSelect">
-                                <!--<div class="letter_edit">{{word.symbol}}</div>-->
-                                <div class="pys_container_edit">
-                                    <div data-ng-repeat="i in [] | range:word.pingyings.length" class="py_container_edit_{{i+1}}">
-                                        <div class="radio_div_edit"><input class="radio" type="radio" name="group" ng-value="i" ng-model="selected" ng-click="setPingying(i);" /></div>
-                                        <div ng-if="word.pingyings[i].one != undefined" class="one_edit">{{word.pingyings[i].one}}</div>
-                                        <div ng-if="word.pingyings[i].two != undefined" class="two_edit">{{word.pingyings[i].two}}</div>
-                                        <div ng-if="word.pingyings[i].twoBold != undefined" class="two_bold_edit">{{word.pingyings[i].twoBold}}</div>
-                                        <div ng-if="word.pingyings[i].three != undefined" class="three_edit">{{word.pingyings[i].three}}</div>
-                                        <div ng-if="word.pingyings[i].four != undefined" class="four_edit">{{word.pingyings[i].four}}</div>
-                                        <div ng-if="word.pingyings[i].tone != undefined" class="tone_edit">{{word.pingyings[i].tone}}</div>
+<!--
+                            <div class="word_container_py_select" ng-show="word.isShowPingyingSelect">
+-->
+                                <div class="dropdown pull-right pys_container_py_select" ng-style="{ 'width' : word.pys_container_width }" ng-show="word.isShowPingyingSelect">
+                                    <div data-ng-repeat="i in [] | range:word.pingyings.length" class="py_container_py_select_{{i+1}}">
+                                        <div class="radio_div_py_select"><input class="radio" type="radio" name="group" ng-value="i" ng-model="selected" ng-click="setPingying(i);" /></div>
+                                        <div ng-if="word.pingyings[i].one != undefined" class="one_py_select">{{word.pingyings[i].one}}</div>
+                                        <div ng-if="word.pingyings[i].two != undefined" class="two_py_select">{{word.pingyings[i].two}}</div>
+                                        <div ng-if="word.pingyings[i].twoBold != undefined" class="two_bold_py_select">{{word.pingyings[i].twoBold}}</div>
+                                        <div ng-if="word.pingyings[i].three != undefined" class="three_py_select">{{word.pingyings[i].three}}</div>
+                                        <div ng-if="word.pingyings[i].four != undefined" class="four_py_select">{{word.pingyings[i].four}}</div>
+                                        <div ng-if="word.pingyings[i].tone != undefined" class="tone_py_select">{{word.pingyings[i].tone}}</div>
                                     </div>
                                 </div>
+<!--
                             </div>
+-->
                         </div>
                     </div>
                     </div>
