@@ -12,11 +12,15 @@
     left: 50px;*/
     height: 56px;
 /*    width: 100px;*/
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
     float: left;
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
-    background-color:rgba(174,198,207,0.85);
+    background-color:rgba(174,198,207,0.90);
     z-index:10;
 }
 .py_container_py_select_1 {
@@ -75,7 +79,7 @@
 }
 .tone_py_select {
     position: relative;
-    top: 0px;
+    top: -5px;
     left: 7px;
     width: 10px;
     height: 10px;
@@ -85,7 +89,7 @@
 }
 .one_py_select {
     position: relative;
-    top: 8px;
+    top: 3px;
     width: 10px;
     height: 5px;
     text-align: center;
@@ -111,10 +115,12 @@
     top: 5px;
     width: 10px;
     height: 5px;
+    padding-top: 2px;
     text-align: center;
 }
 .four_py_select {
     position: relative;
+    padding-top: 4px;
     top: 10px;
     width: 10px;
     height: 5px;
