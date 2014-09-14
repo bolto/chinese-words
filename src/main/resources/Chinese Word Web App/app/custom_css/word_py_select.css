@@ -68,63 +68,66 @@
 .radio_div_py_select {
     position: relative;
     left: 0px;
-    top: -5px;
+    top: -15px;
     width: 20px;
     height: 5px;
 }
 .radio_py_select input[radio] {
     position: relative;
     left: 0px;
-    top: -5px;
+    /*top: -5px;*/
 }
 .tone_py_select {
     position: relative;
-    top: -5px;
-    left: 7px;
+    top: -19px;
+    left: 6px;
     width: 10px;
     height: 10px;
-    font-size: 20px;
+    font-size: 30px;
     text-align: center;
-    text-indent: 5px;
+    text-indent: 6px;
 }
 .one_py_select {
     position: relative;
-    top: 3px;
+    top: -12px;
     width: 10px;
     height: 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 30px;
 }
 .two_py_select {
     position: relative;
-    top: 5px;
+    top: -6px;
     width: 10px;
     height: 5px;
     text-align: center;
+    font-size: 14px;
 }
 .two_bold_py_select {
     position: relative;
-    top: 5px;
+    top: -6px;
     width: 10px;
     height: 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 14px;
 }
 .three_py_select {
     position: relative;
-    top: 5px;
+    top: -7px;
     width: 10px;
     height: 5px;
     padding-top: 2px;
     text-align: center;
+    font-size: 14px;
 }
 .four_py_select {
     position: relative;
-    padding-top: 4px;
-    top: 10px;
+    /*padding-top: 4px;*/
+    top: 2px;
     width: 10px;
     height: 5px;
     text-align: center;
+    font-size: 14px;
 }
 a.disabled, a.disabled:hover, a.disabled:visited, a.disabled:link, a.disabled:active {
     color: black;

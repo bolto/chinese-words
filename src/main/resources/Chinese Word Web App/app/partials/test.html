@@ -50,7 +50,7 @@
                                         <div ng-if="word.pingyings[i].one != undefined" class="one_py_select">{{word.pingyings[i].one}}</div>
                                         <div ng-if="word.pingyings[i].two != undefined" class="two_py_select">{{word.pingyings[i].two}}</div>
                                         <div ng-if="word.pingyings[i].twoBold != undefined" class="two_bold_py_select">{{word.pingyings[i].twoBold}}</div>
-                                        <div ng-if="word.pingyings[i].three != undefined" class="three_py_select">{{word.pingyings[i].three}}</div>
+                                        <div ng-if="word.pingyings[i].three != undefined" class="three_py_select" ng-style="{ 'top' : word.three_py_select.top }">{{word.pingyings[i].three}}</div>
                                         <div ng-if="word.pingyings[i].four != undefined" class="four_py_select">{{word.pingyings[i].four}}</div>
                                         <div ng-if="word.pingyings[i].tone != undefined" class="tone_py_select">{{word.pingyings[i].tone}}</div>
                                     </div>

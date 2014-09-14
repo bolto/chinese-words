@@ -163,11 +163,11 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.showPingyingSelect = function showPingyingSelect(word){
             word.isShowPingyingSelect = true;
             if(word.pys_container_width == undefined){
-                word.pys_container_width = "25px";
+                word.pys_container_width = "26px";
             }
             if(word.pingyings == undefined){
                 var wordpingyings = WordPingying.list({word : word.symbol}, function (response){
-                    word.pys_container_width = "" + wordpingyings.length * 25 + "px";
+                    word.pys_container_width = "" + wordpingyings.length * 26 + "px";
                     word.pingyings = [];
                     for(var i = 0; i<wordpingyings.length; i++){
                         var py = WordUtils.toFormattedPingying(wordpingyings[i].pingying);
