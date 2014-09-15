@@ -168,6 +168,8 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             if(word.pys_container_width == undefined){
                 word.pys_container_width = "26px";
             }else{
+                /* this return is needed as otherwise there is a chance of making REST call
+                                    more than once due to the time it takes to complete the asyn call*/
                 return;
             }
             if(word.pingyings == undefined){
