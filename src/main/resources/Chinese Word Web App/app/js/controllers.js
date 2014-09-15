@@ -144,6 +144,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.isDirty = false;
         $scope.isShowPingying = true;
         $scope.isPingyingEditLinkEnabled = false;
+        $scope.isPingyingEditHoverEnabled = false;
         $scope.total_words = 0;
         $scope.lines = [];
         $scope.showWordlists = function showWordlists(test){
@@ -161,16 +162,20 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             word.isShowPingyingSelect = false;
         }
         $scope.showPingyingSelect = function showPingyingSelect(word){
+            if(!$scope.isPingyingEditHoverEnabled)
+                return;
             word.isShowPingyingSelect = true;
             if(word.pys_container_width == undefined){
                 word.pys_container_width = "26px";
+            }else{
+                return;
             }
             if(word.pingyings == undefined){
                 var wordpingyings = WordPingying.list({word : word.symbol}, function (response){
                     word.pys_container_width = "" + wordpingyings.length * 26 + "px";
                     word.pingyings = [];
                     for(var i = 0; i<wordpingyings.length; i++){
-                        var py = WordUtils.toFormattedPingying(wordpingyings[i].pingying);
+                        var py = WordUtils.toFormattedPingyingForEdit(wordpingyings[i].pingying);
                         if (word.pingying.id == wordpingyings[i].pingying.id){
                             word.currentPingying = i;
                             word.selected = i;
@@ -240,6 +245,9 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.clickIsPingyingEditLinkEnabled = function clickIsPingyingEditLinkEnabled(){
             $scope.isPingyingEditLinkEnabled = !$scope.isPingyingEditLinkEnabled;
         };
+        $scope.clickIsPingyingEditHoverEnabled = function clickIsPingyingEditHoverEnabled(){
+            $scope.isPingyingEditHoverEnabled = !$scope.isPingyingEditHoverEnabled;
+        };
         $scope.isWordsReady = function isWordsReady(){
             if($scope.isDirty)
                 return false;
@@ -298,7 +306,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                     word.isShowPingyingSelect = false;
                     if(WordUtils.hasPingying(word))
                         $scope.total_words ++;
-                    word.formatted_word = WordUtils.toFormattedWord(word);//WordUtils
+                    word.formatted_word = WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);//WordUtils
                     if((word.symbol == undefined || word.symbol.trim() == "")){
                         if(words.length > 0){
                             $scope.lines.push(words);
@@ -316,7 +324,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             $scope.showWords();
         };
         $scope.hasPingying = function hasPingying(word){
-            return WordUtils.toFormattedWord(word);
+            return WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);
         };
         $scope.generate = function generate(){
             // generates a given size of random words
@@ -353,7 +361,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             while(words.length < targetSize){
                 var random = Math.floor((Math.random() * mapToArray.length)) ;
                 var word = mapToArray[random];
-                word.formatted_word = WordUtils.toFormattedWord(word);
+                word.formatted_word = WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);
                 words.push(word);
                 // remove the pushed word from array to avoid repeats
                 mapToArray.splice(random, 1);

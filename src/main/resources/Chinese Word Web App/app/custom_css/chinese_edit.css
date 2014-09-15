@@ -1,11 +1,11 @@
 .word_container_edit {
-    position: absolute;
-/*    width: 200px;*/
+    position: relative;
+    width: 200px;
     height: 52px;
-    right:-20px;
-    top:-15;
+/*    right:-20px;*/
+    top: 20;
     /*background: white;*/
-    float:right;
+/*    float:right;*/
     -webkit-border-radius: 15px;
     -moz-border-radius: 15px;
     border-radius: 15px;
@@ -15,7 +15,7 @@
 .letter_edit {
     position: relative;
     top: -10px;
-    height: 50px;
+/*    height: 50px;*/
     font-size: 50px;
     vertical-align: middle;
     display: inline;
@@ -106,7 +106,7 @@
     height: 5px;
     text-align: center;
 }
-.two_bold_edit {
+.tone_bold_at_two_edit {
     position: relative;
     top: 5px;
     width: 10px;
