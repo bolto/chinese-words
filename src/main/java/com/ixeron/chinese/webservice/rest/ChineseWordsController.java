@@ -47,6 +47,7 @@ import com.ixeron.chinese.domain.Test;
 import com.ixeron.chinese.domain.Tone;
 import com.ixeron.chinese.domain.Word;
 import com.ixeron.chinese.domain.WordPingying;
+import com.ixeron.chinese.domain.WordPingyingId;
 import com.ixeron.chinese.domain.Wordlist;
 import com.ixeron.chinese.domain.WordlistWord;
 import com.ixeron.chinese.service.dao.PingyingCharacterDao;
@@ -158,7 +159,7 @@ public class ChineseWordsController {
         return list;
     }
 
-    @RequestMapping(value = {"/wordlists"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/wordlists/", "/wordlists"}, method = RequestMethod.GET)
     @ResponseBody
     public List<Wordlist> getWordlistList() {
         List<Wordlist> list = null;
@@ -166,6 +167,17 @@ public class ChineseWordsController {
         list = wordlistDao.list();
 
         return list;
+    }
+
+    @RequestMapping(value = {"/wordlists/{id}", "/wordlists/{id}/"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Wordlist getWordlistList(@PathVariable("id") Integer id_p) {
+        if (id_p == null){
+            return null;
+        }
+        Wordlist wl = wordlistDao.find(id_p);
+
+        return wl;
     }
 
     @RequestMapping(value = {"/profiles/{profileId}/wordlists/{wordlistId}", "/profiles/{profileId}/wordlists/{wordlistId}/"}, produces = "application/json", method = RequestMethod.GET)
@@ -473,12 +485,19 @@ public class ChineseWordsController {
         return wordPingying_p;
     }
 
-    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword//{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword/{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public WordlistWord saveWordlistWord(@RequestBody WordlistWord wordlistword_p, HttpServletResponse httpResponse_p) {
-        wordlistWordDao.update(wordlistword_p);
+        WordlistWord ww = wordlistWordDao.find(wordlistword_p.getId());
+        WordPingyingId wpi = ww.getWordPingyingId();
+        wpi.getPingying().setId(wordlistword_p.getWordPingyingId().getPingying().getId());
+        ww.setUpdated(new Date());
+        wordlistWordDao.update(ww);
+        
+        ww = wordlistWordDao.find(wordlistword_p.getId());
+        
         httpResponse_p.setStatus(HttpStatus.OK.value()); 
-        return wordlistword_p;
+        return ww;
     }
 
     /**

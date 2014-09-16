@@ -44,7 +44,7 @@
                             <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
                             <div class="dropdown pull-right pys_container_py_select" ng-style="{ 'width' : word.pys_container_width }" ng-show="word.isShowPingyingSelect && word.pingyings.length > 1 && isPingyingEditHoverEnabled">
                                 <div data-ng-repeat="i in [] | range:word.pingyings.length" class="py_container_py_select_{{i+1}}">
-                                    <div class="radio_div_py_select"><input class="radio" type="radio" name="group" ng-value="i" ng-model="selected" ng-click="setPingying(i);" /></div>
+                                    <div class="radio_div_py_select"><input class="radio" type="radio" name="group_{{word.id}}" ng-value="i" ng-model="selectedPingyingIndex" ng-click="updateWordlistWordPingying(word, word.pingyings[i])" /></div>
                                     <div ng-if="word.pingyings[i].one != undefined" class="one_py_select">{{word.pingyings[i].one}}</div>
                                     <div ng-if="word.pingyings[i].two != undefined" class="two_py_select">{{word.pingyings[i].two}}</div>
                                     <div ng-if="word.pingyings[i].toneBoldAtTwo != undefined" class="tone_bold_at_two_py_select">{{word.pingyings[i].toneBoldAtTwo}}</div>
