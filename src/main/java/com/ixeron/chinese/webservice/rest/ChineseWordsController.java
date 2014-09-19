@@ -504,7 +504,7 @@ public class ChineseWordsController {
      * Return the detailed word data of a given Chinese word.  Request parameter search should contain only word Chinese word. 
      * @return a word object matching supplied search word
      */
-    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword//{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword/{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ResponseBody
     public WordlistWord getWordlistWordById(@PathVariable("wordlistwordId") Integer wordlistwordId_p) {
         WordlistWord word = null;

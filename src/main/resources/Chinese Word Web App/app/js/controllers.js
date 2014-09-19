@@ -135,8 +135,58 @@ chinesewordControllers.controller('ProfileListCtrl', ['$scope', 'Profile', 'Word
 chinesewordControllers.controller('CoreCtrl', ['$scope', 'Word', 'WordUtils',
     function($scope, Word, WordUtils) {
         $scope.word = Word.get({wordId:5245}, function(word){
+            $scope.word.wordpingyings = WordPingying.list({word : $scope.word.symbol}, function (response){
+                $scope.word.pingyings = [];
+                for(var i = 0; i<$scope.wordpingyings.length; i++){
+                    var py = WordUtils.toFormattedPingying($scope.wordpingyings[i].pingying);
+                    $scope.word.pingyings.push(py);
+                }
+            });
             $scope.word.fw = WordUtils.toFormattedWord(word);
         });
+    }]);
+chinesewordControllers.controller('Test2Ctrl', ['$scope', 'Test', 'WordlistAll', 'WordUtils', 'WordPingying', 'WordlistWord',
+    function ($scope, Test, WordlistAll, WordUtils, WordPingying, WordlistWord) {
+        $scope.word = WordlistWord.get({id : 5403}, function(response){
+            $scope.word.isShowPingyingSelect = false;
+            $scope.word.selected_py_id = $scope.word.pingying.id;
+            $scope.word.formatted_word = WordUtils.toFormattedWord($scope.word, WordUtils.FormatStyle.STANDARD);
+            var wordpingyings = WordPingying.list({word : $scope.word.symbol}, function (response){
+                $scope.word.pingyings = [];
+                $scope.word.pys_container_width = "" + wordpingyings.length * 26 + "px";
+                for(var i = 0; i< wordpingyings.length; i++){
+                    var py = WordUtils.toFormattedPingying(wordpingyings[i].pingying);
+                    py.id = wordpingyings[i].pingying.id;
+                    $scope.word.pingyings.push(py);
+                }
+            });
+        });
+        $scope.word.fw = WordUtils.toFormattedWord($scope.word);
+        $scope.hidePingyingSelect = function hidePingyingSelect(word){
+            word.isShowPingyingSelect = false;
+        }
+        $scope.showPingyingSelect = function showPingyingSelect(word){
+            word.isShowPingyingSelect = true;
+        }
+        $scope.updateWordlistWordPingying = function updateWordlistWordPingying(word, py){
+            if(word.pingying.id == py.id){return;}
+            word.selected_py_id = py.id;
+            var wordUpdate = WordlistWord.get({id : word.id}, function(response){
+                delete wordUpdate.wordPingyingId.pingying;
+                wordUpdate.wordPingyingId.pingying = new Object();
+                wordUpdate.wordPingyingId.pingying.id = py.id;
+                delete wordUpdate.wordPingyingId.word;
+                wordUpdate.wordPingyingId.word = new Object();
+                wordUpdate.wordPingyingId.word.id = word.id;
+                delete wordUpdate.pingying;
+                wordUpdate.$update({id : word.id}, function (response){
+                    word = response;
+                    word.formatted_word = WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);
+                    $scope.word.pingying = word.pingying;
+                    $scope.word.formatted_word = word.formatted_word;
+                });
+            });
+        }
     }]);
 chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 'WordUtils', 'WordPingying', 'WordlistWord',
     function ($scope, Test, WordlistAll, WordUtils, WordPingying, WordlistWord) {
@@ -150,7 +200,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.showWordlists = function showWordlists(test){
             $scope.isDirty = false;
             $scope.test = Test.get({testId:test.id}, function (response) {
-                $scope.wordlists = WordlistAll.query(function (response) {
+                $scope.wordlists = WordlistAll.list(function (response) {
                     angular.forEach(response, function (item) {
                         item.selected = $scope.isExistingWordlist(item);
                         $scope.updateStatus();
@@ -381,14 +431,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 window.open("http://localhost/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
         };
         $scope.updateWordlistWordPingying = function updateWordlistWordPingying(word, py){
-            console.log("word.wordPingyingId.pingying.id: " + word.wordPingyingId.pingying.id );
-            console.log("word.formatted_word.py.one: " + word.formatted_word.py.one );
-            console.log("word.formatted_word.py.two: " + word.formatted_word.py.two );
-            console.log("word.formatted_word.py.toneBoldAtTwo: " + word.formatted_word.py.toneBoldAtTwo );
-            console.log("word.formatted_word.py.three: " + word.formatted_word.py.three );
-            console.log("word.formatted_word.py.four: " + word.formatted_word.py.four );
-            console.log("word.formatted_word.py.tone: " + word.formatted_word.py.tone );
-            $scope.word = WordlistWord.list({id : word.id}, function(response){
+            $scope.word = WordlistWord.get({id : word.id}, function(response){
                 delete $scope.word.wordPingyingId.pingying;
                 $scope.word.wordPingyingId.pingying = new Object();
                 $scope.word.wordPingyingId.pingying.id = py.id;
@@ -396,27 +439,9 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
                 $scope.word.wordPingyingId.word = new Object();
                 $scope.word.wordPingyingId.word.id = word.id;
                 delete $scope.word.pingying;
-                delete $scope.word.created;
-                delete $scope.word.updated;
                 $scope.word.$update({id : word.id}, function (response){
                     word = response;
                     word.formatted_word = WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);
-
-                    console.log("word.symbol:" + word.symbol );
-/*
-                    word.wordPingyingId.pingying = py;
-*/
-                    console.log("word.wordPingyingId.pingying.id: " + word.wordPingyingId.pingying.id );
-/*
-                    word.pingying = py;
-                    word.formatted_word = WordUtils.toFormattedWord(word, WordUtils.FormatStyle.STANDARD);
-*/
-                    console.log("word.formatted_word.py.one: " + word.formatted_word.py.one );
-                    console.log("word.formatted_word.py.two: " + word.formatted_word.py.two );
-                    console.log("word.formatted_word.py.toneBoldAtTwo: " + word.formatted_word.py.toneBoldAtTwo );
-                    console.log("word.formatted_word.py.three: " + word.formatted_word.py.three );
-                    console.log("word.formatted_word.py.four: " + word.formatted_word.py.four );
-                    console.log("word.formatted_word.py.tone: " + word.formatted_word.py.tone );
                 });
             });
         }

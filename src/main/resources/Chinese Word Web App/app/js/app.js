@@ -72,6 +72,10 @@ chinesewordApp.config(['$routeProvider', '$locationProvider',
             templateUrl: 'partials/test.html',
             controller: 'TestCtrl'
         }).
+        when('/tests2', {
+            templateUrl: 'partials/wl_word_py_select_test.html',
+            controller: 'Test2Ctrl'
+        }).
         when('/edits', {
             templateUrl: 'partials/word_edit_prototype.html',
             controller: 'WordEditCtrl'

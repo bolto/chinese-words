@@ -48,24 +48,6 @@ public class ChineseWordsTestController {
     @Autowired
     private View jsonView_i;
 
-    /**
-     * Gets all assignments with their test ids equal to the supplied test id.
-     * 
-     * @return the assignments
-     */
-    @RequestMapping(value = {"/tests/{testId}/assignments/", "/tests/{testId}/assignments"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @ResponseBody
-    public List<Assignment> listAssignmentsByTestId(@PathVariable("testId") String testId_p) {
-        Test test = testDao.find(Integer.parseInt(testId_p));
-        if(test == null){
-            String msg = String.format("Invalid test id: %s.", (testId_p==null)? "null":testId_p);
-            System.out.format("%s", msg);
-            return null;
-        }
-        List<Assignment> assignments = assignmentDao.listByTestId(test.getId());
-        return assignments;
-    }
-
     @RequestMapping(value = {"/tests/{testId}/wordlists"}, method = RequestMethod.GET)
     @ResponseBody
     public List<Wordlist> getWordlistListByTestId(@PathVariable("testId") String testId_p) {
@@ -120,45 +102,6 @@ public class ChineseWordsTestController {
 
         httpResponse_p.setStatus(HttpStatus.OK.value()); 
         return test_p;
-    }
-
-    @RequestMapping(value = {"/tests/{testId}/wordlists/", "/tests/{testId}/wordlists"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Test addWordlistToTest(@PathVariable("testId") String testId_p, @RequestBody final List<Wordlist> wordlistList) {
-        Test test = testDao.find(Integer.parseInt(testId_p));
-        if(test == null){
-            String msg = String.format("Invalid test id: %s.", (testId_p==null)? "null":testId_p);
-            System.out.format("%s", msg);
-            throw new IllegalArgumentException(msg);
-        }
-        //TODO: add wordlists to test
-        for(Wordlist wordlist : wordlistList){
-            
-        }
-        //TODO: re-load test so that it has all the list of wordlists
-        return test;
-    }
-
-    @RequestMapping(value = {"/assignments/", "/assignments"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Assignment saveAssignment(@RequestBody final Assignment assignment) {
-        assignmentDao.add(assignment);
-        return assignment;
-    }
-
-    /**
-     * Gets all assignments.
-     * 
-     * @return
-     */
-    @RequestMapping(value = {"/assignments/", "/assignments"}, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<Assignment> getAssignments() {
-        List<Assignment> list = null;
-
-        list = assignmentDao.list();
-
-        return list;
     }
 
     @RequestMapping(value = {"/tests/", "/tests"}, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

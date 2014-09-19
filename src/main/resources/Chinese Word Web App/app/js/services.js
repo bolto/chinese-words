@@ -41,7 +41,7 @@ chinesewordServices.factory('WordPingying', ['$resource',
 chinesewordServices.factory('WordlistWord', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/wordlistword/:id', {}, {
-            list: {method:'GET', params:{id:'@id'}},
+            get: {method:'GET', params:{id:'@id'}},
             update: {method:'PUT', params:{id:'@id'}}
         });
     }]);
@@ -91,7 +91,7 @@ chinesewordServices.factory('WordlistAll', ['$resource',
     function($resource){
         return $resource('http://localhost:8080/api/wordlists/',
             {}, {
-                query: {method:'GET', params:{}, isArray:true}
+                list: {method:'GET', params:{}, isArray:true}
             });
     }
 ]);
