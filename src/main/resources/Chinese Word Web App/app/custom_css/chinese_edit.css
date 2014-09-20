@@ -69,6 +69,14 @@
     width: 25px;
     height: 52px;
 }
+.radio_div_py_select {
+    position: relative;
+    left: 0px;
+    top: -15px;
+    width: 20px;
+    height: 5px;
+    z-index: 10;
+}
 .radio_div_edit {
     position: relative;
     left: 0px;
