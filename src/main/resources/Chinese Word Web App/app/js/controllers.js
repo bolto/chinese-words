@@ -193,7 +193,6 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         $scope.tests = Test.list();
         $scope.isDirty = false;
         $scope.isShowPingying = true;
-        $scope.isPingyingEditLinkEnabled = false;
         $scope.isPingyingEditHoverEnabled = false;
         $scope.total_words = 0;
         $scope.lines = [];
@@ -294,9 +293,6 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         };
         $scope.clickIsShowPingying = function clickIsShowPingying(){
             $scope.isShowPingying = !$scope.isShowPingying;
-        };
-        $scope.clickIsPingyingEditLinkEnabled = function clickIsPingyingEditLinkEnabled(){
-            $scope.isPingyingEditLinkEnabled = !$scope.isPingyingEditLinkEnabled;
         };
         $scope.clickIsPingyingEditHoverEnabled = function clickIsPingyingEditHoverEnabled(){
             $scope.isPingyingEditHoverEnabled = !$scope.isPingyingEditHoverEnabled;
