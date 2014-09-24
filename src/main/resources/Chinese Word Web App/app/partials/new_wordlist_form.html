@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span10">
+            <div style="width: 600px; margin-left: auto; margin-right: auto; text-align: left;">
+                <form ng-submit="processForm()">
+                    <div class="form-group">
+                        <label>Add New Wordlist</label>
+                    </div>
+                    <!-- NAME -->
+                    <div id="name-group" class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter a name ..."
+                               ng-model="formData.name">
+                        <span class="help-block"></span>
+                    </div>
+
+                    <!-- SUPERHERO NAME -->
+                    <div id="superhero-group" class="form-group">
+                        <label>Chinese words</label>
+                        <textarea name="wordlist" class="form-control" placeholder=""
+                                  ng-model="formData.wordlist"></textarea>
+                        <span class="help-block"></span>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" class="btn btn-success btn-lg btn-block">
+                        <span class="glyphicon glyphicon-flash"></span> Submit!
+                    </button>
+                </form>
+
+                <!-- SHOW DATA FROM INPUTS AS THEY ARE BEING TYPED -->
+<pre>
+        Submit Status  : {{status}}
+        Additional Info: {{info}}
+</pre>
+            </div>
+        </div>
+    </div>
+</div>

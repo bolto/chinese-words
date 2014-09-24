@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -169,6 +170,22 @@ public class ChineseWordsController {
         return list;
     }
 
+    @RequestMapping(value = {"/wordlists/", "/wordlists"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Wordlist saveWordlist(@RequestBody @Valid final Wordlist wordlist) {
+    	Date now = new Date();
+    	wordlist.setCreated(now);
+    	wordlist.setUpdated(now);
+    	wordlistDao.add(wordlist);
+    	
+    	wordlistDao.add(wordlist);
+
+    	for(WordlistWord word : wordlist.getWords()){
+    		
+    	}
+        return wordlist;
+    }
+
     @RequestMapping(value = {"/wordlists/{id}", "/wordlists/{id}/"}, method = RequestMethod.GET)
     @ResponseBody
     public Wordlist getWordlistList(@PathVariable("id") Integer id_p) {
@@ -304,41 +321,52 @@ public class ChineseWordsController {
         return wordlist;
     }
 
-    @RequestMapping(value = {"/profiles/{profileId}/addWordlist"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/wordlists/addWordlist"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
-    public String addWordlist(@RequestParam("wordlist") String wordList_p, @RequestParam("name") String name_p,
-            @PathVariable("profileId") String profileId_p,
+    public RestResult addWordlist(@RequestParam("wordlist") String wordList_p, @RequestParam("name") String name_p,
             HttpServletResponse httpResponse_p, WebRequest request_p) {
-        Profile profile = getProfile(profileId_p);
-        if(profile == null){
-            return String.format("Invalid profile id: %s.", (profileId_p==null)? "null":profileId_p);
+        RestResult res = new RestResult();
+
+        if(name_p == null || name_p.equals("")){
+        	res.setSuccess(false);
+        	res.setErrors("Wordlist name can not be empty.");
         }
-        String name = String.format("%s-%s", profileId_p, new Date());
-        if(name_p != null && !name_p.equals("")){
-        	name = name_p;
+        if(wordList_p == null || wordList_p.length() == 0){
+        	res.setSuccess(false);
+        	res.setErrors("No words were submitted and therefore nothing was done.");
         }
-        if(wordList_p == null || wordList_p.length() == 0)
-        	return "redirect:/api/profiles/1/addWordlist";
-        Map<String, Word> words = wordDao.listToMap(wordList_p);
+
         Wordlist wordlistEntry = new Wordlist();
         Date now = new Date();
         wordlistEntry.setCreated(now);
         wordlistEntry.setUpdated(now);
-        wordlistEntry.setName(name);
+        wordlistEntry.setName(name_p);
         wordlistDao.add(wordlistEntry);
-        ProfileWordlistId pwId = new ProfileWordlistId();
-        pwId.setProfile(profile);
-        pwId.setWordlist(wordlistEntry);
-        ProfileWordlist pw = new ProfileWordlist();
-        pw.setPk(pwId);
-        pw.setCreated(now);
-        profileWordlistDao.add(pw);
-        for(int i = 0; i<wordList_p.length(); i++){
-            String symbol = wordList_p.substring(i, i+1);
+
+        addWordlistWords(wordlistEntry.getId(), wordList_p);
+
+        res.setSuccess(true);
+        res.setMessage(String.format("Wordlist %s has been created with supplied words.", wordlistEntry.getName()));
+        return res;
+    }
+    private void addWordlistWords(Integer wordlistId, String texts){
+    	if(wordlistId == null)
+    		return;
+    	Wordlist wordlist = wordlistDao.find(wordlistId);
+    	if(wordlist == null)
+    		return;
+    	if(texts == null || texts.length() <= 0)
+    		return;
+
+    	Date now = null;
+        Map<String, Word> words = wordDao.listToMap(texts);
+
+        for(int i = 0; i < texts.length(); i++){
+            String symbol = texts.substring(i, i+1);
             WordlistWord wordlistWord = new WordlistWord();
             wordlistWord.setSymbol(symbol);
             wordlistWord.setListOrder(i);
-            wordlistWord.setWordlistId(wordlistEntry.getId());
+            wordlistWord.setWordlistId(wordlistId);
             Word word = null;
             if(words != null && words.containsKey(symbol)){
                 word = words.get(symbol);
@@ -355,8 +383,6 @@ public class ChineseWordsController {
             wordlistWord.setUpdated(now);
             wordlistWordDao.add(wordlistWord);
         }
-
-        return "redirect:/api/profiles/1/addWordlist";
     }
 
     private String getProfileAddWordListWebPageHtml(){
@@ -382,6 +408,7 @@ public class ChineseWordsController {
         }
         return text;
     }
+
     @RequestMapping(value = {"/search", "/search/"}, produces={"text/html; charset=UTF-8"}, method = RequestMethod.GET)
     @ResponseBody
     public String showSearchForm() {
@@ -423,23 +450,7 @@ public class ChineseWordsController {
             word = words.get(wordChar);
             WordDto wordDto = new WordDto();
             wordDto.setSymbol(word.getSymbol());
-//            for(Pingying py : word.getPingyings()){
-//                String pyStr = "";
-//
-//                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-//                }
-//                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-//                }
-//                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-//                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-//                }
-//                if(py.getToneId() != 1){
-//                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-//                }
-//                wordDto.addPingying(pyStr);
-//            }
+
             wordDtos.add(wordDto);
             wordsStr += wordDto.toString() + "<br>";
         }

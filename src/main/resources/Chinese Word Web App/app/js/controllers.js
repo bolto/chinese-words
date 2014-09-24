@@ -450,7 +450,31 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
             });
         }
     }]);
+chinesewordControllers.controller('WordlistFormCtrl', ['$scope', '$http',
+    function ($scope, $http) {
+        $scope.formData = {};
+        $scope.processForm = function processForm() {
+            $http({
+                method: 'POST',
+                url: 'http://localhost:8080/api/wordlists/addWordlist',
+                data: $.param($scope.formData),  // pass in data as strings
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+            })
+                .success(function (data) {
+                    console.log(data);
 
+                    if (!data.success) {
+                        // if not successful, bind errors to error variables
+                        $scope.info = data.errors;
+                    } else {
+                        // if successful, bind success message to message
+                        $scope.info = data.message;
+                    }
+                    $scope.status = (data.success) ? "Successful!" : "Failed";
+                });
+        };
+    }
+]);
 chinesewordControllers.controller('WordlistListCtrl', ['$scope', 'Wordlist',
     function($scope, Wordlist) {
         $scope.getWordlistsByProfileId = function(id){
