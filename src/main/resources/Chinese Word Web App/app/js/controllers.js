@@ -429,7 +429,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         };
         $scope.editWordlistWordPingying = function editWordlistWordPingying(word){
             if($scope.isPingyingEditLinkEnabled)
-                window.open("http://localhost/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
+                window.open("http://" + location.host + "/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
         };
         $scope.updateWordlistWordPingying = function updateWordlistWordPingying(word, py){
             if(word.pingying.id == py.id){return;}
@@ -456,7 +456,7 @@ chinesewordControllers.controller('WordlistFormCtrl', ['$scope', '$http',
         $scope.processForm = function processForm() {
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/wordlists/addWordlist',
+                url: 'http://" + location.host + ":8080/api/wordlists/addWordlist',
                 data: $.param($scope.formData),  // pass in data as strings
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
             })
