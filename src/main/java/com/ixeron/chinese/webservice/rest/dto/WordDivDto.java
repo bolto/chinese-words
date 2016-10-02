@@ -5,7 +5,7 @@ public class WordDivDto {
     private String letter;
     private String one;
     private String two;
-    private String twoBold;
+    private String toneBoldAtTwo;
     private String three;
     private String four;
     private String tone;
@@ -56,18 +56,18 @@ public class WordDivDto {
     }
 
     /**
-     * @return the twoBold
+     * @return the toneBoldAtTwo
      */
     public String getTwoBold() {
-        return twoBold;
+        return toneBoldAtTwo;
     }
 
     /**
-     * @param twoBold
-     *            the twoBold to set
+     * @param toneBoldAtTwo
+     *            the toneBoldAtTwo to set
      */
-    public void setTwoBold(String twoBold) {
-        this.twoBold = twoBold;
+    public void setTwoBold(String toneBoldAtTwo) {
+        this.toneBoldAtTwo = toneBoldAtTwo;
     }
 
     /**

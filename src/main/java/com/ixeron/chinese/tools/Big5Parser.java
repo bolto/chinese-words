@@ -164,15 +164,16 @@ public class Big5Parser {
             if(!nullList.contains(word.getId()))
                 continue;
             int counter = 0;
-            for(Pingying py : word.getPingyings()){
-                counter ++;
-                WordPingying wpy = new WordPingying();
-                wpy.setWord(word);
-                wpy.setPingying(py);
-                WordPingying wpy2 = wordPingyingDao.findByWordPingying(wpy);
-                wpy2.setListOrder(counter);
-                wordPingyingDao.update(wpy2);
-            }
+            // iterate thru all pingings and assign default listing orders
+//            for(Pingying py : word.getPingyings()){
+//                counter ++;
+//                WordPingying wpy = new WordPingying();
+//                wpy.setWord(word);
+//                wpy.setPingying(py);
+//                WordPingying wpy2 = wordPingyingDao.findByWordPingying(wpy);
+//                wpy2.setListOrder(counter);
+//                wordPingyingDao.update(wpy2);
+//            }
         }
     }
 

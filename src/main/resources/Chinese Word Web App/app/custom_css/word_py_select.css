@@ -1,0 +1,151 @@
+.letter_py_select {
+    position: relative;
+    top: -10px;
+    height: 50px;
+    font-size: 50px;
+    vertical-align: middle;
+    display: inline;
+}
+.pys_container_py_select {
+    position: absolute;
+/*    top: -72px;
+    left: 50px;*/
+    height: 56px;
+/*    width: 100px;*/
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    float: left;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    background-color:rgba(174,198,207,0.90);
+    z-index:10;
+}
+.py_container_py_select_1 {
+    position: relative;
+    left: 0;
+    top: -3;
+    width: 25px;
+    height: 52px;
+}
+.py_container_py_select_2 {
+    position: relative;
+    left: 25px;
+    top: -57px;
+    width: 25px;
+    height: 52px;
+}
+.py_container_py_select_3 {
+    position: relative;
+    left: 50px;
+    top: -113px;
+    width: 25px;
+    height: 52px;
+}
+.py_container_py_select_4 {
+    position: relative;
+    left: 75px;
+    top: -169px;
+    width: 25px;
+    height: 52px;
+}
+.py_container_py_select_5 {
+    position: relative;
+    left: 100px;
+    top: -225px;
+    width: 25px;
+    height: 52px;
+}
+.py_container_py_select_6 {
+    position: relative;
+    left: 125px;
+    top: -281px;
+    width: 25px;
+    height: 52px;
+}
+.radio_div_py_select {
+    position: relative;
+    left: 0px;
+    top: -15px;
+    width: 20px;
+    height: 5px;
+    z-index: 10;
+}
+.radio_py_select input[radio] {
+    position: relative;
+    left: 0px;
+    /*top: -5px;*/
+}
+.tone_py_select {
+    position: relative;
+    top: -19px;
+    left: 6px;
+    width: 10px;
+    height: 10px;
+    font-size: 30px;
+    text-align: center;
+    text-indent: 6px;
+}
+.tone_next_to_two_py_select {
+    position: relative;
+    top: -32px;
+    left: 6px;
+    width: 10px;
+    height: 10px;
+    font-size: 30px;
+    text-align: center;
+    text-indent: 6px;
+}
+.one_py_select {
+    position: relative;
+    top: -12px;
+    width: 10px;
+    height: 5px;
+    text-align: center;
+    font-size: 30px;
+}
+.two_py_select {
+    position: relative;
+    top: -6px;
+    width: 10px;
+    height: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+.tone_bold_at_two_py_select {
+    position: relative;
+    top: -6px;
+    width: 10px;
+    height: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+.three_py_select {
+    position: relative;
+    top: -5px;
+    width: 10px;
+    height: 5px;
+    padding-top: 2px;
+    text-align: center;
+    font-size: 14px;
+}
+.four_py_select {
+    position: relative;
+    /*padding-top: 4px;*/
+    top: 2px;
+    width: 10px;
+    height: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+a.disabled, a.disabled:hover, a.disabled:visited, a.disabled:link, a.disabled:active {
+    color: black;
+    cursor: default;
+    text-decoration: none!important;
+}
+a{
+    cursor: pointer;
+    text-decoration: none!important;
+}

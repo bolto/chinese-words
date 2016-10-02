@@ -46,4 +46,15 @@ public class WordPingyingDaoImpl extends HibernateDao <WordPingying, Integer> im
             return null;
         return list.get(0);
     }
+
+	@Override
+	public List<WordPingying> listByWordId(Integer id) {
+        String queryStr = "SELECT * FROM word_pingying wpy WHERE wpy.word_id = {word_id} ORDER BY wpy.list_order ASC;";
+        queryStr = queryStr.replace("{word_id}", id.toString());
+        
+        @SuppressWarnings("unchecked")
+        List<WordPingying> list = currentSession().createSQLQuery(queryStr).addEntity(WordPingying.class).list();
+
+        return list;
+	}
 }

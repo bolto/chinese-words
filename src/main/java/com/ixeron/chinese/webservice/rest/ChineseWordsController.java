@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -43,9 +44,11 @@ import com.ixeron.chinese.domain.PingyingCharacter;
 import com.ixeron.chinese.domain.Profile;
 import com.ixeron.chinese.domain.ProfileWordlist;
 import com.ixeron.chinese.domain.ProfileWordlistId;
+import com.ixeron.chinese.domain.Test;
 import com.ixeron.chinese.domain.Tone;
 import com.ixeron.chinese.domain.Word;
 import com.ixeron.chinese.domain.WordPingying;
+import com.ixeron.chinese.domain.WordPingyingId;
 import com.ixeron.chinese.domain.Wordlist;
 import com.ixeron.chinese.domain.WordlistWord;
 import com.ixeron.chinese.service.dao.PingyingCharacterDao;
@@ -157,7 +160,7 @@ public class ChineseWordsController {
         return list;
     }
 
-    @RequestMapping(value = {"/wordlists"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/wordlists/", "/wordlists"}, method = RequestMethod.GET)
     @ResponseBody
     public List<Wordlist> getWordlistList() {
         List<Wordlist> list = null;
@@ -165,6 +168,33 @@ public class ChineseWordsController {
         list = wordlistDao.list();
 
         return list;
+    }
+
+    @RequestMapping(value = {"/wordlists/", "/wordlists"}, method = RequestMethod.POST)
+    @ResponseBody
+    public Wordlist saveWordlist(@RequestBody @Valid final Wordlist wordlist) {
+    	Date now = new Date();
+    	wordlist.setCreated(now);
+    	wordlist.setUpdated(now);
+    	wordlistDao.add(wordlist);
+    	
+    	wordlistDao.add(wordlist);
+
+    	for(WordlistWord word : wordlist.getWords()){
+    		
+    	}
+        return wordlist;
+    }
+
+    @RequestMapping(value = {"/wordlists/{id}", "/wordlists/{id}/"}, method = RequestMethod.GET)
+    @ResponseBody
+    public Wordlist getWordlistList(@PathVariable("id") Integer id_p) {
+        if (id_p == null){
+            return null;
+        }
+        Wordlist wl = wordlistDao.find(id_p);
+
+        return wl;
     }
 
     @RequestMapping(value = {"/profiles/{profileId}/wordlists/{wordlistId}", "/profiles/{profileId}/wordlists/{wordlistId}/"}, produces = "application/json", method = RequestMethod.GET)
@@ -291,41 +321,52 @@ public class ChineseWordsController {
         return wordlist;
     }
 
-    @RequestMapping(value = {"/profiles/{profileId}/addWordlist"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/wordlists/addWordlist"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
-    public String addWordlist(@RequestParam("wordlist") String wordList_p, @RequestParam("name") String name_p,
-            @PathVariable("profileId") String profileId_p,
+    public RestResult addWordlist(@RequestParam("wordlist") String wordList_p, @RequestParam("name") String name_p,
             HttpServletResponse httpResponse_p, WebRequest request_p) {
-        Profile profile = getProfile(profileId_p);
-        if(profile == null){
-            return String.format("Invalid profile id: %s.", (profileId_p==null)? "null":profileId_p);
+        RestResult res = new RestResult();
+
+        if(name_p == null || name_p.equals("")){
+        	res.setSuccess(false);
+        	res.setErrors("Wordlist name can not be empty.");
         }
-        String name = String.format("%s-%s", profileId_p, new Date());
-        if(name_p != null && !name_p.equals("")){
-        	name = name_p;
+        if(wordList_p == null || wordList_p.length() == 0){
+        	res.setSuccess(false);
+        	res.setErrors("No words were submitted and therefore nothing was done.");
         }
-        if(wordList_p == null || wordList_p.length() == 0)
-        	return "redirect:/api/profiles/1/addWordlist";
-        Map<String, Word> words = wordDao.listToMap(wordList_p);
+
         Wordlist wordlistEntry = new Wordlist();
         Date now = new Date();
         wordlistEntry.setCreated(now);
         wordlistEntry.setUpdated(now);
-        wordlistEntry.setName(name);
+        wordlistEntry.setName(name_p);
         wordlistDao.add(wordlistEntry);
-        ProfileWordlistId pwId = new ProfileWordlistId();
-        pwId.setProfile(profile);
-        pwId.setWordlist(wordlistEntry);
-        ProfileWordlist pw = new ProfileWordlist();
-        pw.setPk(pwId);
-        pw.setCreated(now);
-        profileWordlistDao.add(pw);
-        for(int i = 0; i<wordList_p.length(); i++){
-            String symbol = wordList_p.substring(i, i+1);
+
+        addWordlistWords(wordlistEntry.getId(), wordList_p);
+
+        res.setSuccess(true);
+        res.setMessage(String.format("Wordlist %s has been created with supplied words.", wordlistEntry.getName()));
+        return res;
+    }
+    private void addWordlistWords(Integer wordlistId, String texts){
+    	if(wordlistId == null)
+    		return;
+    	Wordlist wordlist = wordlistDao.find(wordlistId);
+    	if(wordlist == null)
+    		return;
+    	if(texts == null || texts.length() <= 0)
+    		return;
+
+    	Date now = null;
+        Map<String, Word> words = wordDao.listToMap(texts);
+
+        for(int i = 0; i < texts.length(); i++){
+            String symbol = texts.substring(i, i+1);
             WordlistWord wordlistWord = new WordlistWord();
             wordlistWord.setSymbol(symbol);
             wordlistWord.setListOrder(i);
-            wordlistWord.setWordlistId(wordlistEntry.getId());
+            wordlistWord.setWordlistId(wordlistId);
             Word word = null;
             if(words != null && words.containsKey(symbol)){
                 word = words.get(symbol);
@@ -342,8 +383,6 @@ public class ChineseWordsController {
             wordlistWord.setUpdated(now);
             wordlistWordDao.add(wordlistWord);
         }
-
-        return "redirect:/api/profiles/1/addWordlist";
     }
 
     private String getProfileAddWordListWebPageHtml(){
@@ -369,6 +408,7 @@ public class ChineseWordsController {
         }
         return text;
     }
+
     @RequestMapping(value = {"/search", "/search/"}, produces={"text/html; charset=UTF-8"}, method = RequestMethod.GET)
     @ResponseBody
     public String showSearchForm() {
@@ -410,23 +450,7 @@ public class ChineseWordsController {
             word = words.get(wordChar);
             WordDto wordDto = new WordDto();
             wordDto.setSymbol(word.getSymbol());
-            for(Pingying py : word.getPingyings()){
-                String pyStr = "";
 
-                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-                }
-                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-                }
-                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-                }
-                if(py.getToneId() != 1){
-                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-                }
-                wordDto.addPingying(pyStr);
-            }
             wordDtos.add(wordDto);
             wordsStr += wordDto.toString() + "<br>";
         }
@@ -446,51 +470,78 @@ public class ChineseWordsController {
     }
 
     /**
-     * Gets all words.
-     * RequestParam("size") Integer size, RequestParam("wordlist") String wordList
-     * @return all words
+     * Gets all wordPingyings.
+     * RequestParam("word") String word 
+     * @return all wordPingyings
      */
-    @RequestMapping(value = {"/words/", "/words"}, produces = "text/plain;charset=UTF-8", method = RequestMethod.GET)
+    @RequestMapping(value = {"/wordpingyings/", "/wordpingyings"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @ResponseBody
-    public ModelAndView getWords(@RequestParam(value="search", required=false) String search) {
-        // TODO: this needs to return a list of words using GET filter parameters
+    public List<WordPingying> getWordPingyings(@RequestParam(value="word", required=true) String word_p) {
+    	
+        if(word_p.trim().equals("") || word_p.trim().length() != 1){
+        	return null;
+        }
+        Word word = wordDao.findBySymbol(word_p);
+        if(word == null)
+        	return null;
+        List<WordPingying> list = wordPingyingDao.listByWordId(word.getId());
+        return list;
+    }
+
+    @RequestMapping(value = {"/wordpingyings/", "/wordpingyings"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public WordPingying saveTest(@RequestBody WordPingying wordPingying_p, HttpServletResponse httpResponse_p) {
+		wordPingyingDao.update(wordPingying_p);
+        httpResponse_p.setStatus(HttpStatus.OK.value()); 
+        return wordPingying_p;
+    }
+
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword/{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public WordlistWord saveWordlistWord(@RequestBody WordlistWord wordlistword_p, HttpServletResponse httpResponse_p) {
+        WordlistWord ww = wordlistWordDao.find(wordlistword_p.getId());
+        WordPingyingId wpi = ww.getWordPingyingId();
+        wpi.getPingying().setId(wordlistword_p.getWordPingyingId().getPingying().getId());
+        ww.setUpdated(new Date());
+        wordlistWordDao.update(ww);
+        
+        ww = wordlistWordDao.find(wordlistword_p.getId());
+        
+        httpResponse_p.setStatus(HttpStatus.OK.value()); 
+        return ww;
+    }
+
+    /**
+     * Return the detailed word data of a given Chinese word.  Request parameter search should contain only word Chinese word. 
+     * @return a word object matching supplied search word
+     */
+    @RequestMapping(value = {"/wordlistword/{wordlistwordId}/", "/wordlistword/{wordlistwordId}"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public WordlistWord getWordlistWordById(@PathVariable("wordlistwordId") Integer wordlistwordId_p) {
+        WordlistWord word = null;
+
+        word = wordlistWordDao.find(wordlistwordId_p);
+
+        return word;
+    }
+    
+    /**
+     * Return the detailed word data of a given Chinese word.  Request parameter search should contain only word Chinese word. 
+     * @return a word object matching supplied search word
+     */
+    @RequestMapping(value = {"/words/", "/words"}, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Word> findWord(@RequestParam(value="search", required=false) String search) {
         List<Word> words = null;
 
-        List<WordDto> wordDtos = new ArrayList<WordDto>();
-
         if(search != null && !search.trim().equals("")){
-            words = wordDao.findBySymbols(search);
+            words = wordDao.findBySymbols(search.substring(0,1));
         }
-//        words = wordDao.list(5);
-        int counter = 0;
-        if(words == null || words.size() ==0){
-            return new ModelAndView(jsonView_i, DATA_FIELD, "No words returned.");
-        }
-        for(Word word : words){
-            counter ++;
-            WordDto wordDto = new WordDto();
-            wordDto.setSymbol(word.getSymbol());
-            for(Pingying py : word.getPingyings()){
-                String pyStr = "";
 
-                if(py.getFirstPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getFirstPyId()).getSymbol();
-                }
-                if(py.getSecondPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getSecondPyId()).getSymbol();
-                }
-                if(py.getThirdPyId() != pingyingCharacterLut.getNoChar().getId()){
-                    pyStr += pingyingCharacterLut.getById(py.getThirdPyId()).getSymbol();
-                }
-                if(py.getToneId() != 1){
-                    pyStr += toneLut.getById(py.getToneId()).getSymbol();
-                }
-                wordDto.addPingying(pyStr);
-            }
-            wordDtos.add(wordDto);
+        if(words == null || words.size() ==0){
+            return null;
         }
-//        System.out.format("Counter: %d.\nWordDtos size: %d.\n", counter, wordDtos.size());
-        return new ModelAndView(jsonView_i, DATA_FIELD, wordDtos);
+        return words;
     }
     
     /**

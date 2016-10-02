@@ -6,14 +6,14 @@ var chinesewordServices = angular.module('chinesewordServices', ['ngResource']);
 
 chinesewordServices.factory('Profile', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/profiles/', {}, {
+        return $resource('http://' + location.host + ':8080/api/profiles/', {}, {
             query: {method:'GET', params:{}, isArray:true}
         });
     }]);
 
 chinesewordServices.factory('Test', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/tests/:testId', {}, {
+        return $resource('http://' + location.host + ':8080/api/tests/:testId', {}, {
             list: {method:'GET', params:{entryId:''}, isArray:true},
             get: {method:'GET', params:{entryId:'@entryId'}, isArray:false},
             post:{method:'POST', params:{entryId:''}},
@@ -21,10 +21,39 @@ chinesewordServices.factory('Test', ['$resource',
             delete:{method:'DELETE', params:{entryId:'@entryId'}}
         });
     }]);
-
+chinesewordServices.factory('Word', ['$resource',
+    function($resource){
+        return $resource('http://' + location.host + ':8080/api/words/', {}, {
+            list: {method:'GET', params:{search:'@search'}, isArray:true},
+            get: {method:'GET', params:{wordId:'@wordId'}, isArray:false},
+            post:{method:'POST', params:{wordId:''}},
+            update: {method:'PUT', params:{wordId:'@wordId'}},
+            delete:{method:'DELETE', params:{wordId:'@wordId'}}
+        });
+    }]);
+chinesewordServices.factory('Wordlist', ['$resource',
+    function($resource){
+        return $resource('http://' + location.host + ':8080/api/wordlists/:wordlistId/', {name:'@name', words:'@words'}, {
+            post: {method:'POST', params:{name:'@name', words:'@words'}}
+        });
+    }]);
+chinesewordServices.factory('WordPingying', ['$resource',
+    function($resource){
+        return $resource('http://' + location.host + ':8080/api/wordpingyings/', {}, {
+            list: {method:'GET', params:{word:'@word'}, isArray:true},
+            update: {method:'PUT', params:{}}
+        });
+    }]);
+chinesewordServices.factory('WordlistWord', ['$resource',
+    function($resource){
+        return $resource('http://' + location.host + ':8080/api/wordlistword/:id', {}, {
+            get: {method:'GET', params:{id:'@id'}},
+            update: {method:'PUT', params:{id:'@id'}}
+        });
+    }]);
 chinesewordServices.factory('TestWordlist', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/tests/:testId/wordlists', {}, {
+        return $resource('http://' + location.host + ':8080/api/tests/:testId/wordlists', {}, {
             list: {method:'GET', params:{entryId:''}, isArray:true},
             get: {method:'GET', params:{entryId:'@entryId'}, isArray:false},
             post:{method:'POST', params:{entryId:''}},
@@ -35,20 +64,20 @@ chinesewordServices.factory('TestWordlist', ['$resource',
 
 chinesewordServices.factory('PingyingCharacter', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/pingying_characters', {}, {
+        return $resource('http://' + location.host + ':8080/api/pingying_characters', {}, {
             list: {method:'GET', params:{}, isArray:true}
         });
     }]);
 chinesewordServices.factory('Tone', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/tones', {}, {
+        return $resource('http://' + location.host + ':8080/api/tones', {}, {
             list: {method:'GET', params:{}, isArray:true}
         });
     }]);
 
 chinesewordServices.factory('WordlistProfile', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/profiles/:profileId/wordlists/',
+        return $resource('http://' + location.host + ':8080/api/profiles/:profileId/wordlists/',
             {}, {
             query: {method:'GET', params:{profileId:'@profileId'}, isArray:true}
         });
@@ -57,7 +86,7 @@ chinesewordServices.factory('WordlistProfile', ['$resource',
 
 chinesewordServices.factory('WordlistTest', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/tests/:testId/wordlists/',
+        return $resource('http://' + location.host + ':8080/api/tests/:testId/wordlists/',
             {}, {
                 query: {method:'GET', params:{testId:'@testId'}, isArray:true}
             });
@@ -66,29 +95,18 @@ chinesewordServices.factory('WordlistTest', ['$resource',
 
 chinesewordServices.factory('WordlistAll', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/wordlists/',
+        return $resource('http://' + location.host + ':8080/api/wordlists/',
             {}, {
-                query: {method:'GET', params:{}, isArray:true}
+                list: {method:'GET', params:{}, isArray:true}
             });
     }
 ]);
 
 chinesewordServices.factory('WordlistTest', ['$resource',
     function($resource){
-        return $resource('http://localhost:8080/api/tests/:testId/wordlists/',
+        return $resource('http://' + location.host + ':8080/api/tests/:testId/wordlists/',
             {}, {
                 query: {method:'GET', params:{}, isArray:true}
             });
     }
 ]);
-chinesewordServices.factory('Word', ['$resource',
-    function($resource){
-        return $resource('http://localhost:8080/api/words/:wordId',
-            {}, {
-                list: {method:'GET', params:{wordId:''}, isArray:true},
-                get: {method:'GET', params:{wordId:'@wordId'}, isArray:false},
-                post:{method:'POST', params:{wordId:''}},
-                update: {method:'PUT', params:{wordId:'@wordId'}},
-                delete:{method:'DELETE', params:{wordId:'@wordId'}}
-        });
-    }]);

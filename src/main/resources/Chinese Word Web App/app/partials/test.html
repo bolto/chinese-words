@@ -28,17 +28,33 @@
             </div>
             <div class="lines_container">
                 <h1>Words</h1>
-                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">
+                Show Word: <input type='checkbox' ng-checked="isShowLetter" ng-click="clickIsShowLetter()">&nbsp;&nbsp;&nbsp;
+                Show Pingying: <input type='checkbox' ng-checked="isShowPingying" ng-click="clickIsShowPingying()">&nbsp;&nbsp;&nbsp;
+                Enable Pingying Edit Hover: <input type='checkbox' ng-checked="isPingyingEditHoverEnabled" ng-click="clickIsPingyingEditHoverEnabled()">&nbsp;&nbsp;&nbsp;
                 Total words: {{total_words}}<br>
                 <div ng-repeat="line in lines" ng-if="isShowWords" class="line_container">
                     <div ng-repeat="word in line" class="words_container" ng-if="isShowWords">
-                        <div class="letter">{{word.formatted_word.letter}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.one != undefined" class="number one">{{word.formatted_word.py.one}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.two != undefined" class="number two">{{word.formatted_word.py.two}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.twoBold != undefined" class="number two_bold">{{word.formatted_word.py.twoBold}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.three != undefined" class="number three">{{word.formatted_word.py.three}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.four != undefined" class="number four">{{word.formatted_word.py.four}}</div>
-                        <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" class="number tone">{{word.formatted_word.py.tone}}</div>
+                        <div class="word_container" ng-mouseover="showPingyingSelect(word)" ng-mouseleave="hidePingyingSelect(word)" id="word_{{word.id}}">
+                            <div class="letter" ng-show="isShowLetter">{{word.formatted_word.letter}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.one != undefined" ng-model="word.formatted_word.py.one" class="number one">{{word.formatted_word.py.one}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.two != undefined" ng-model="word.formatted_word.py.two" class="number two">{{word.formatted_word.py.two}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.toneBoldAtTwo != undefined" ng-model="word.formatted_word.py.toneBoldAtTwo" class="number tone_bold_at_two">{{word.formatted_word.py.toneBoldAtTwo}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.three != undefined" ng-model="word.formatted_word.py.three" class="number three">{{word.formatted_word.py.three}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.four != undefined" ng-model="word.formatted_word.py.four" class="number four">{{word.formatted_word.py.four}}</div>
+                            <div ng-show="isShowPingying" ng-if="word.formatted_word.py.tone != undefined" ng-model="word.formatted_word.py.tone" class="number tone">{{word.formatted_word.py.tone}}</div>
+                            <div class="dropdown pull-right pys_container_py_select" ng-if="word.isShowPingyingSelect" ng-style="{ 'width' : word.pys_container_width }" ng-show="word.pingyings.length > 1 && isPingyingEditHoverEnabled">
+                                <div data-ng-repeat="i in [] | range:word.pingyings.length" class="py_container_py_select_{{i+1}}">
+                                    <div class="radio_div_py_select"><input class="radio" type="radio" name="group_{{word.id}}" ng-value="word.pingyings[i].id" ng-model="word.selected_py_id" ng-click="updateWordlistWordPingying(word, word.pingyings[i])" /></div>
+                                    <div ng-if="word.pingyings[i].one != undefined" class="one_py_select">{{word.pingyings[i].one}}</div>
+                                    <div ng-if="word.pingyings[i].two != undefined" class="two_py_select">{{word.pingyings[i].two}}</div>
+                                    <div ng-if="word.pingyings[i].toneBoldAtTwo != undefined" class="tone_bold_at_two_py_select">{{word.pingyings[i].toneBoldAtTwo}}</div>
+                                    <div ng-if="word.pingyings[i].three != undefined" class="three_py_select" ng-style="{ 'top' : word.three_py_select.top }">{{word.pingyings[i].three}}</div>
+                                    <div ng-if="word.pingyings[i].four != undefined" class="four_py_select">{{word.pingyings[i].four}}</div>
+                                    <div ng-if="word.pingyings[i].toneNextToTwo != undefined" class="tone_next_to_two_py_select">{{word.pingyings[i].toneNextToTwo}}</div>
+                                    <div ng-if="word.pingyings[i].toneNextToTwo == undefined && word.pingyings[i].tone != undefined" class="tone_py_select">{{word.pingyings[i].tone}}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

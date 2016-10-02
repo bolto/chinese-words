@@ -7,14 +7,16 @@
 	<artifactId>chinese-words-web-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Chinese Words</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<start-class>com.ixeron.chinese.webservice.rest.ChineseWordsController</start-class>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>0.5.0.M7</version>
+		<version>1.0.0.RELEASE</version>
 	</parent>
 
 	<dependencies>
@@ -86,6 +88,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.ixeron.chinese.webservice.rest.ChineseWordsController</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

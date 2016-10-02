@@ -39,7 +39,7 @@ public class WordDaoImpl extends HibernateDao <Word, Integer> implements WordDao
                 inCondition += ",";
             inCondition += String.format("'%s'", symbols.substring(i, i+1));
         }
-        String queryStr = "SELECT * FROM word WHERE symbol in ({symbols});";
+        String queryStr = "SELECT * FROM word WHERE symbol IN ({symbols}) ORDER BY FIELD(symbol, {symbols}) ;";
         queryStr = queryStr.replace("{symbols}", inCondition);
         
         @SuppressWarnings("unchecked")

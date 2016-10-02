@@ -6,7 +6,7 @@ import java.util.List;
 public class WordDto {
     private String symbol;
     List<String> pingyings = new ArrayList<String>();
-//    private List<PingyingDto> pingyings = new ArrayList<PingyingDto>();
+    //private List<PingyingDto> pingyings = new ArrayList<PingyingDto>();
     /**
      * @return the symbol
      */

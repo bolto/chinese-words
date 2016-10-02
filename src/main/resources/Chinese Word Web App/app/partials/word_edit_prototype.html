@@ -3,69 +3,27 @@
 		<div class="span2">
 			<!--Sidebar content-->
 
-			Word Edit
+			Default Pingying Edit
 		</div>
 		<div class="span10">
 			<!--Body content-->
+            Words:<input class="std5digits" type="text" ng-enter="loadPingying()" name="search" id="search" ng-model="search" /><br><br>
+
             <div class="word_container_edit">
-                <div class="letter_edit">間</div>
+                <div class="letter_edit">{{word.symbol}}</div>
                 <div class="pys_container_edit">
-                    <div class="py_container_edit_1">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_2">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_3">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_4">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_5">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
-                    </div>
-                    <div class="py_container_edit_6">
-                        <div class="radio_div_edit"><input class="radio" type="radio" name="group1" value="1" /></div>
-                        <div class="one_edit">ˇ</div>
-                        <div class="two_edit">ㄐ</div>
-                        <div class="two_bold_edit"></div>
-                        <div class="three_edit">ㄧ</div>
-                        <div class="four_edit">ㄢ</div>
-                        <div class="tone_edit">ˇ</div>
+                    <div data-ng-repeat="i in [] | range:pingyings.length" class="py_container_edit_{{i+1}}">
+                        <div class="radio_div_edit"><input class="radio" type="radio" name="group" ng-value="i" ng-model="selected" ng-click="setDefaultPingying(i);" /></div>
+                        <div ng-if="pingyings[i].one != undefined" class="one_edit">{{pingyings[i].one}}</div>
+                        <div ng-if="pingyings[i].two != undefined" class="two_edit">{{pingyings[i].two}}</div>
+                        <div ng-if="pingyings[i].toneBoldAtTwo != undefined" class="tone_bold_at_two_edit">{{pingyings[i].toneBoldAtTwo}}</div>
+                        <div ng-if="pingyings[i].three != undefined" class="three_edit">{{pingyings[i].three}}</div>
+                        <div ng-if="pingyings[i].four != undefined" class="four_edit">{{pingyings[i].four}}</div>
+                        <div ng-if="pingyings[i].tone != undefined" class="tone_edit">{{pingyings[i].tone}}</div>
                     </div>
                 </div>
-            </div>
+            </div><br>
+            <button ng-click="save()" ng-disabled="!isDirty">Save</button>
 		</div>
 	</div>
 </div>

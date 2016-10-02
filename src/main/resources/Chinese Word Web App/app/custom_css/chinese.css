@@ -34,8 +34,8 @@ ul {
 .letter {
     position: absolute;
     left: 0;
-    top: 50%;
-    width: 650%;
+    top: 10%;
+    /*width: 650%;*/
     bottom: 0;
     display: inline-block;
     font-size: 36px;
@@ -51,21 +51,30 @@ ul {
 }
 .tone {
     position: absolute;
-    right: 0;
-    top: 60%;
+    right: -20px;
+    top: 45%;
+    width: 15%;
+    font-size: 20px;
+    text-align: center;
+    text-indent: 5px;
+}
+.tone_next_to_two {
+    position: absolute;
+    right: 14px;
+    top: 25%;
     width: 15%;
     font-size: 20px;
     text-align: center;
     text-indent: 5px;
 }
 .one {
-    top: 30%;
+    top: 20%;
     font-size: 20px;
 }
 .two {
     top: 35%;
 }
-.two_bold {
+.tone_bold_at_two {
     top: 45%;
     font-size: 20px;
 }
