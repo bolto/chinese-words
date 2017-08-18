@@ -429,7 +429,7 @@ chinesewordControllers.controller('TestCtrl', ['$scope', 'Test', 'WordlistAll', 
         };
         $scope.editWordlistWordPingying = function editWordlistWordPingying(word){
             if($scope.isPingyingEditLinkEnabled)
-                window.open("http://localhost/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
+                window.open("http://" + location.host + "/chinese/index.html#/wordlist_word?id=" + word.id,'_blank');
         };
         $scope.updateWordlistWordPingying = function updateWordlistWordPingying(word, py){
             if(word.pingying.id == py.id){return;}
