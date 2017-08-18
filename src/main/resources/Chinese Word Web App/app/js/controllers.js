@@ -456,7 +456,7 @@ chinesewordControllers.controller('WordlistFormCtrl', ['$scope', '$http',
         $scope.processForm = function processForm() {
             $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/wordlists/addWordlist',
+                url:  window.location.protocol + '//' + window.location.hostname + ':8080/api/wordlists/addWordlist',
                 data: $.param($scope.formData),  // pass in data as strings
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
             })
